@@ -9,53 +9,41 @@
         /* СТИЛИ И АНИМАЦИИ */
         /* ==================== */
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+            margin: 0; padding: 0; height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #333;
-            user-select: none;
+            
+            /* --- ФОНОВОЕ ФОТО --- */
+            background-image: url('3.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+
+            overflow: hidden; display: flex; justify-content: center; align-items: center; color: #333; user-select: none;
+        }
+
+        /* Затемнение фона */
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3); z-index: -1;
         }
 
         #fireworksCanvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none;
-            mix-blend-mode: multiply;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; mix-blend-mode: screen;
         }
 
         .container {
             position: relative; z-index: 1; text-align: center;
-            background: rgba(255, 255, 255, 0.9); padding: 3rem 4rem;
-            border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            max-width: 700px; width: 90%;
-            animation: fadeInUp 0.8s ease-out;
+            background: rgba(255, 255, 255, 0.95); padding: 3rem 4rem;
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            max-width: 700px; width: 90%; animation: fadeInUp 0.8s ease-out;
         }
 
-        /* --- СТИЛИ ЗАГОЛОВКА-ССЫЛКИ --- */
-        h1 {
-            font-family: 'Georgia', serif;
-            margin-bottom: 2rem;
-        }
-        
-        /* Ссылка внутри заголовка наследует стиль текста */
-        h1 a {
-            text-decoration: none; /* Убираем подчеркивание */
-            color: #2c3e50;        /* Цвет как был */
-            cursor: pointer;       /* Курсор-рука */
-            transition: opacity 0.3s;
-        }
-        
-        /* Эффект при наведении */
-        h1 a:hover {
-            opacity: 0.6; /* Легкая прозрачность */
-        }
+        h1 { font-family: 'Georgia', serif; margin-bottom: 2rem; }
+        h1 a { text-decoration: none; color: #2c3e50; cursor: pointer; transition: opacity 0.3s; }
+        h1 a:hover { opacity: 0.6; }
 
         .buttons-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        
         .btn-task {
             padding: 15px 30px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer;
             background-color: #5d6d7e; color: white; transition: all 0.3s ease;
@@ -63,20 +51,19 @@
         }
         .btn-task:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(93, 109, 126, 0.4); }
         .btn-task:active, .btn-check:active, .t-btn:active, .btn-color:active, .reset-btn:active { transform: scale(0.95) !important; }
-        
         .btn-success { background-color: #27ae60 !important; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4) !important; }
         .btn-success:hover { background-color: #219150 !important; transform: translateY(-3px) !important; }
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 100; justify-content: center; align-items: center;
+            background: rgba(0, 0, 0, 0.7); z-index: 100; justify-content: center; align-items: center;
             opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; }
 
         .modal-content {
             background: white; padding: 1.5rem; border-radius: 15px; text-align: center;
-            max-width: 450px; width: 95%; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 450px; width: 95%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
         }
         
@@ -97,16 +84,13 @@
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.3s; line-height: 1; }
         .close-btn:hover { color: #e74c3c; rotate: 90deg; }
         .btn-check { padding: 10px 20px; background: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s; }
-        
         .game-block { display: none; margin-top: 10px; margin-bottom: 10px; animation: fadeInUp 0.5s ease-out; }
-        
         .score-board { font-size: 1.1rem; color: #27ae60; font-weight: bold; margin-bottom: 10px; }
-        .reset-btn { position: fixed; bottom: 10px; right: 10px; opacity: 0.3; font-size: 0.8rem; cursor: pointer; background: none; border: 1px solid #333; padding: 5px 10px; border-radius: 5px; z-index: 10; transition: 0.3s; }
+        .reset-btn { position: fixed; bottom: 10px; right: 10px; opacity: 0.6; font-size: 0.8rem; cursor: pointer; background: rgba(255,255,255,0.8); border: 1px solid #333; padding: 5px 10px; border-radius: 5px; z-index: 10; transition: 0.3s; }
         .reset-btn:hover { opacity: 1; background: #fff; }
-
         .anim-item { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
 
-        /* ИГРЫ СТИЛИ */
+        /* ИГРОВЫЕ СТИЛИ */
         .sentence-area { min-height: 50px; border-bottom: 2px solid #3498db; margin-bottom: 20px; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; transition: border-color 0.3s; }
         .words-pool { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; background: #f0f2f5; padding: 15px; border-radius: 10px; }
         .word-chip { background-color: #ecf0f1; border: 1px solid #bdc3c7; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
@@ -148,12 +132,12 @@
         @keyframes popOut { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } 100% { transform: scale(0); opacity: 0; } }
         @keyframes shake { 0% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } 100% { transform: translateX(0); } }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-
     </style>
 </head>
 <body>
 
     <canvas id="fireworksCanvas"></canvas>
+    <audio id="successSound" src="with-applause.mp3"></audio>
 
     <div class="container">
         <h1><a href="index.html" title="Вернуться на главную">Выберите направление</a></h1>
@@ -193,14 +177,12 @@
             <div id="tetrisGameBlock" class="game-block">
                 <div class="score-board">Линий: <span id="tetrisLines">0</span> / 2</div>
                 <canvas id="tetrisCanvas" width="240" height="400"></canvas>
-                
                 <div class="tetris-controls">
                     <button class="t-btn" onclick="playerMove(-1)">←</button>
                     <button class="t-btn rotate" onclick="playerRotate(1)">↻</button>
                     <button class="t-btn" onclick="playerMove(1)">→</button>
                     <button class="t-btn down" onclick="playerHardDrop()">⤓</button>
                 </div>
-
                 <button class="btn-check tetris-restart" onclick="startTetris()">Начать заново</button>
                 <p style="font-size: 0.8rem; color:#999; margin-top:5px;">Поворот: ↑ или W. Сброс: Пробел.</p>
             </div>
@@ -229,8 +211,8 @@
     <div id="successModal" class="modal-overlay">
         <div class="success-content">
             <span class="success-icon">🎉</span>
-            <h2>Отлично!</h2>
-            <p>Вы справились с задачей.</p>
+            <h2 id="winTitle">Отлично!</h2>
+            <p id="winDesc">Вы справились с задачей.</p>
             <button id="continueBtn" class="btn-continue" onclick="continueGame()">Продолжить</button>
         </div>
     </div>
@@ -262,6 +244,15 @@
         function stopSalute() { isFireworksActive = false; particles = []; fCtx.clearRect(0,0,fCanvas.width, fCanvas.height); }
 
         /* --- ДАННЫЕ И КОНФИГ --- */
+        const successPhrases = [
+            { h: "Великолепно!", p: "Ваш фокус внимания поражает." },
+            { h: "Так держать!", p: "Вы отлично справляетесь с нагрузкой." },
+            { h: "Блестяще!", p: "Ваша логика работает безупречно." },
+            { h: "Успех!", p: "Шаг за шагом вы идете к цели." },
+            { h: "Превосходно!", p: "Еще одна победа в вашу копилку." },
+            { h: "Вы молодец!", p: "Ваш мозг в отличной форме." }
+        ];
+
         const sentencesPool = [ "Психология помогает понять себя", "Гармония начинается внутри нас", "Счастье любит тишину", "Мысли формируют нашу реальность" ];
         const oddOnePool = [ { words: ["Радость", "Восторг", "Счастье", "Грусть"], correct: "Грусть" }, { words: ["Страх", "Тревога", "Паника", "Спокойствие"], correct: "Спокойствие" }, { words: ["Стол", "Стул", "Шкаф", "Мысль"], correct: "Мысль" }, { words: ["Яблоко", "Груша", "Банан", "Огурец"], correct: "Огурец" } ];
         const colorsData = [ { name: "Красный", hex: "#e74c3c" }, { name: "Синий", hex: "#3498db" }, { name: "Зеленый", hex: "#27ae60" }, { name: "Желтый", hex: "#f1c40f" }, { name: "Черный", hex: "#2c3e50" } ];
@@ -527,17 +518,41 @@
             }
         }
 
-        /* --- УСПЕХ --- */
+        /* --- УСПЕХ И РАЗНООБРАЗИЕ --- */
         function showSuccess() {
             modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 300);
             stopSnake(); stopTetris();
+            
+            // 1. Выбираем случайную фразу
+            const msg = successPhrases[Math.floor(Math.random() * successPhrases.length)];
+            document.getElementById('winTitle').innerText = msg.h;
+            document.getElementById('winDesc').innerText = msg.p;
+
+            // 2. Включаем модалку
             successModal.style.display = 'flex'; successModal.classList.add('active');
+            
+            // 3. Скрываем кнопку
             const btn = document.getElementById('continueBtn'); btn.style.display = 'none'; btn.style.animation = 'none';
+            
+            // 4. Запускаем звук
+            const audio = document.getElementById('successSound');
+            audio.currentTime = 0;
+            audio.play().catch(e => console.log("Ошибка воспроизведения звука:", e));
+
+            // 5. Салют
             startSalute();
+            
+            // 6. Таймер кнопки
             setTimeout(() => { btn.style.display = 'inline-block'; btn.style.animation = 'fadeIn 0.5s forwards'; }, 3000);
         }
 
         function continueGame() {
+            // --- STOP AUDIO ---
+            const audio = document.getElementById('successSound');
+            audio.pause();
+            audio.currentTime = 0;
+            // ------------------
+
             stopSalute(); successModal.classList.remove('active'); setTimeout(() => successModal.style.display = 'none', 300);
             const btnKey = 'btn' + activeBtnId; state[btnKey].currentStage++; saveProgress();
             if (state[btnKey].currentStage >= 3) { finishButton(activeBtnId); } else { launchGame(activeBtnId, state[btnKey].currentStage); }

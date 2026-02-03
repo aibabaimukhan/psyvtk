@@ -148,8 +148,8 @@
     </div>
 
     <div class="container">
-        <h1>Паспорт кабинета</h1>
-        <p>Форма №1</p>
+        <h1>Ваш путь в логике</h1>
+        <p>Нажмите на номер этапа, чтобы увидеть результаты.</p>
 
         <div class="map-wrapper">
             <svg class="path-svg" viewBox="0 0 400 600">
@@ -180,67 +180,173 @@
         </div>
     </div>
 
-    <div id="modal-2" class="modal-overlay" onclick="closeModal(2)">
-        <div class="modal-content" onclick="event.stopPropagation()">
+   <div id="modal-2" class="modal-overlay" onclick="closeModal(2)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 950px;">
             <span class="close-btn" onclick="closeModal(2)">&times;</span>
-            <h2>2. Кабинеттің функционалды қолданылуы</h2>
-            <div style="overflow-x: auto;">
-                <table style="min-width: 800px;">
-                    <thead>
-                        <tr>
-                            <th>Уақыты</th><th>Дүйсенбі</th><th>Сейсенбі</th><th>Сәрсенбі</th><th>Бейсенбі</th><th>Жұма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight:bold; background:#fffcf5;">9.00-12.30</td>
-                            <td>Студенттермен психодиагностикалық жұмыстар.<br><br>Дербес және топтық түзету-дамыту жұмыстары.</td>
-                            <td>Психологиялық диагностика жұмыстарының қорытындысын шығару.</td>
-                            <td>Дербес кеңес беру жұмыстары.</td>
-                            <td>Дербес және топтық дамыту жұмыстары.</td>
-                            <td>Дербес кеңес беру жұмыстары.<br><br>Психопрофилактикалық жұмыстар.</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:bold; background:#fffcf5;">14.00-17.30</td>
-                            <td>Қызметкерлермен кеңес беру жұмыстары.</td>
-                            <td>Құжаттармен жұмыс.</td>
-                            <td>Ұйымдастырушылық-әдістемелік жұмыстар.</td>
-                            <td>Студенттермен психопрофилактикалық жұмыстар.</td>
-                            <td>Ұйымдастырушылық-әдістемелік жұмыстар.</td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
+                2. Кабинеттің функционалды қолданылуы / Функциональное использование
+            </h2>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('modal-2', 'kaz')">KZ</button>
+                <button class="tab-btn" onclick="switchTab('modal-2', 'rus')">RU</button>
             </div>
+
+            <div id="modal-2-kaz" class="tab-content active">
+                <div style="overflow-x: auto; max-height: 70vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2;">
+                                <th style="border: 1px solid #ddd; padding: 10px;">Уақыты</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Дүйсенбі</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Сейсенбі</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Сәрсенбі</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Бейсенбі</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Жұма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психодиагностикалық жұмыстар.<br><br>Дербес және топтық түзету-дамыту жұмыстары.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Психологиялық диагностика жұмыстарының қорытындысын шығару.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес және топтық дамыту жұмыстары.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.<br><br>Студенттермен және ата-аналармен психопрофилактикалық жұмыстар.</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Қызметкерлермен кеңес беру жұмыстары.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Құжаттармен жұмыс.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психопрофилактикалық жұмыстар.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal-2-rus" class="tab-content">
+                <div style="overflow-x: auto; max-height: 70vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2;">
+                                <th style="border: 1px solid #ddd; padding: 10px;">Время</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Понедельник</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Вторник</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Среда</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Четверг</th>
+                                <th style="border: 1px solid #ddd; padding: 10px;">Пятница</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Психодиагностическая работа со студентами (проективные методики, тестирование, опрос, анкетирование).<br><br>Индивидуальная, групповая коррекционно-развивающая работа.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Обработка данных диагностических обследований.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная, групповая коррекционно-развивающая работа (поведенческая терапия).</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.<br><br>Психопрофилактическая работа со студентами, так же с родителями.</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Консультационная работа с сотрудниками.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Работа с документами.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Психопрофилактическая работа со студентами (психологические игры, тренинги, релаксация).</td>
+                                <td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <div id="modal-3" class="modal-overlay" onclick="closeModal(3)">
-        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 800px;">
             <span class="close-btn" onclick="closeModal(3)">&times;</span>
-            <h2>3. Перечень основного оборудования</h2>
-            <table style="font-size: 0.95rem;">
-                <thead><tr><th style="width:50px;">№</th><th>Наименование имущества</th><th style="width:100px;">Количество</th></tr></thead>
-                <tbody>
-                    <tr><td align="center">1</td><td>Рабочий стол</td><td align="center">1</td></tr>
-                    <tr><td align="center">2</td><td>Переносная парта</td><td align="center">1</td></tr>
-                    <tr><td align="center">3</td><td>Стулья</td><td align="center">7</td></tr>
-                    <tr><td align="center">4</td><td>Интерактивная доска</td><td align="center">1</td></tr>
-                    <tr><td align="center">5</td><td>Флипчарт доска</td><td align="center">1</td></tr>
-                    <tr><td align="center">6</td><td>Ковер</td><td align="center">1</td></tr>
-                    <tr><td align="center">7</td><td>Мягкое кресло</td><td align="center">2</td></tr>
-                    <tr><td align="center">8</td><td>Диван</td><td align="center">1</td></tr>
-                    <tr><td align="center">9</td><td>Шкаф</td><td align="center">2</td></tr>
-                    <tr><td align="center">10</td><td>Подсветки (кубы-светильники)</td><td align="center">3</td></tr>
-                    <tr><td align="center">11</td><td>Журнальный столик</td><td align="center">1</td></tr>
-                    <tr><td align="center">12</td><td>Проектор</td><td align="center">1</td></tr>
-                    <tr><td align="center">13</td><td>МФУ (принтер)</td><td align="center">1</td></tr>
-                    <tr><td align="center">14</td><td>Колонки + 1 сабвуфер</td><td align="center">3</td></tr>
-                    <tr><td align="center">15</td><td>Ноутбук</td><td align="center">1</td></tr>
-                    <tr><td align="center">16</td><td>Компьютер</td><td align="center">1</td></tr>
-                    <tr><td align="center">17</td><td>Ширма</td><td align="center">1</td></tr>
-                    <tr><td align="center">18</td><td>Мягкие коврики</td><td align="center">4</td></tr>
-                </tbody>
-            </table>
+            
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
+                3. Негізгі жабдықтардың тізімі / Перечень основного оборудования
+            </h2>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('modal-3', 'kaz')">KZ</button>
+                <button class="tab-btn" onclick="switchTab('modal-3', 'rus')">RU</button>
+            </div>
+
+            <div id="modal-3-kaz" class="tab-content active">
+                <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
+                                <th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th>
+                                <th style="border: 1px solid #aaa; padding: 10px;">Мүліктің атауы</th>
+                                <th style="border: 1px solid #aaa; padding: 10px; width: 60px;">Саны</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1.</td><td>Жұмыс үстелі</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>2</td><td>Портативті парта</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>3</td><td>Орындықтар</td><td style="text-align: center;">7</td></tr>
+                            <tr><td>4</td><td>Интерактивті тақта</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>5</td><td>Флипчарт тақта</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>6</td><td>Кілем</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>7</td><td>Жұмсақ орындық</td><td style="text-align: center;">2</td></tr>
+                            <tr><td>8</td><td>Диван</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>9</td><td>Шкаф</td><td style="text-align: center;">2</td></tr>
+                            <tr><td>10</td><td>Артқы шамдар (текшелер-шамдар)</td><td style="text-align: center;">3</td></tr>
+                            <tr><td>11</td><td>Кофе үстелі</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>12</td><td>Проектор</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>13</td><td>МФУ(принтер)</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>14</td><td>Колонки +1 сообуфер</td><td style="text-align: center;">3</td></tr>
+                            <tr><td>15</td><td>Ноутбук</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>16</td><td>Компьютер</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>17</td><td>Ширма</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>18</td><td>Жұмсақ төсеніштер</td><td style="text-align: center;">4</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal-3-rus" class="tab-content">
+                <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
+                                <th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th>
+                                <th style="border: 1px solid #aaa; padding: 10px;">Наименование имущества</th>
+                                <th style="border: 1px solid #aaa; padding: 10px; width: 100px;">количество</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1.</td><td>Рабочий стол</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>2</td><td>Переносная парта</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>3</td><td>Стулья</td><td style="text-align: center;">7</td></tr>
+                            <tr><td>4</td><td>Интерактивная доска</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>5</td><td>Флипчарт доска</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>6</td><td>Ковер</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>7</td><td>Мягкое кресло</td><td style="text-align: center;">2</td></tr>
+                            <tr><td>8</td><td>Диван</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>9</td><td>Шкаф</td><td style="text-align: center;">2</td></tr>
+                            <tr><td>10</td><td>Подсветки (кубы-светильники)</td><td style="text-align: center;">3</td></tr>
+                            <tr><td>11</td><td>Журнальный столик</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>12</td><td>Проектор</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>13</td><td>МФУ(принтер)</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>14</td><td>Колонки +1 сообуфер</td><td style="text-align: center;">3</td></tr>
+                            <tr><td>15</td><td>Ноутбук</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>16</td><td>Компьютер</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>17</td><td>Ширма</td><td style="text-align: center;">1</td></tr>
+                            <tr><td>18</td><td>Мягкие коврики</td><td style="text-align: center;">4</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -249,8 +355,8 @@
             <span class="close-btn" onclick="closeModal(4)">&times;</span>
             <h2 style="margin-bottom: 5px;">4. Әдістемелік құралдар / Методические средства</h2>
             <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchTab('modal-4', 'kaz')">🇰🇿 Қазақша</button>
-                <button class="tab-btn" onclick="switchTab('modal-4', 'rus')">🇷🇺 Русский</button>
+                <button class="tab-btn active" onclick="switchTab('modal-4', 'kaz')">KZ</button>
+                <button class="tab-btn" onclick="switchTab('modal-4', 'rus')">RU</button>
             </div>
 
             <div id="modal-4-kaz" class="tab-content active">
@@ -314,8 +420,8 @@
             </h2>
 
             <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchTab('modal-5', 'kaz')">🇰🇿 Қазақша</button>
-                <button class="tab-btn" onclick="switchTab('modal-5', 'rus')">🇷🇺 Русский</button>
+                <button class="tab-btn active" onclick="switchTab('modal-5', 'kaz')">KZ</button>
+                <button class="tab-btn" onclick="switchTab('modal-5', 'rus')">RU</button>
             </div>
 
             <div id="modal-5-kaz" class="tab-content active">
@@ -457,4 +563,3 @@
 
 </body>
 </html>
-

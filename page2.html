@@ -34,7 +34,7 @@
 
         .container {
             position: relative; z-index: 1; text-align: center;
-            background: rgba(255, 255, 255, 0.95); padding: 3rem 4rem;
+            background: rgb(255 215 180 / 71%); padding: 3rem 4rem;
             border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             max-width: 700px; width: 90%; animation: fadeInUp 0.8s ease-out;
         }
@@ -44,15 +44,59 @@
         h1 a:hover { opacity: 0.6; }
 
         .buttons-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .btn-task {
-            padding: 15px 30px; border: none; border-radius: 50px; font-size: 1rem; cursor: pointer;
-            background-color: #5d6d7e; color: white; transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(93, 109, 126, 0.3); outline: none; min-width: 200px;
+
+        /* ========================================== */
+        /* НОВЫЙ СТИЛЬ КНОПОК: ЗОЛОТОЙ ПЕСОК */
+        /* ========================================== */
+        .btn-task, .btn-check, .btn-continue {
+            display: inline-block; text-decoration: none;
+            position: relative;
+            
+            /* Золотистый градиент */
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a; /* Темно-коричневый текст для контраста */
+            
+            padding: 15px 40px; 
+            border-radius: 50px; 
+            font-size: 1.1rem; 
+            font-weight: 800; /* Жирный шрифт */
+            border: 2px solid #fff; /* Белая обводка */
+            cursor: pointer;
+            
+            /* Теплая тень */
+            box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px;
+            outline: none;
         }
-        .btn-task:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(93, 109, 126, 0.4); }
-        .btn-task:active, .btn-check:active, .t-btn:active, .btn-color:active, .reset-btn:active { transform: scale(0.95) !important; }
-        .btn-success { background-color: #27ae60 !important; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4) !important; }
-        .btn-success:hover { background-color: #219150 !important; transform: translateY(-3px) !important; }
+
+        /* Эффект при наведении */
+        .btn-task:hover, .btn-check:hover, .btn-continue:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
+            background: linear-gradient(135deg, #fda085 0%, #f6d365 100%); /* Перелив */
+        }
+
+        /* Эффект нажатия */
+        .btn-task:active, .btn-check:active, .btn-continue:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(253, 160, 133, 0.4);
+        }
+
+        /* СТИЛЬ ВЫПОЛНЕННОЙ КНОПКИ (Изумрудный блеск) */
+        .btn-success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+            color: #0f5740 !important;
+            box-shadow: 0 8px 20px rgba(67, 233, 123, 0.4) !important;
+        }
+        .btn-success:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 12px 25px rgba(67, 233, 123, 0.6) !important;
+        }
+
+        /* Остальные стили */
+        .btn-check { margin-top: 20px; font-size: 1rem; padding: 12px 30px; }
+        .t-btn:active, .btn-color:active, .reset-btn:active { transform: scale(0.95) !important; }
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -74,16 +118,10 @@
             animation: popIn 0.5s ease; border: 2px solid #2ecc71;
         }
         .success-icon { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 1s infinite alternate; }
-        .btn-continue {
-            padding: 12px 30px; background: #27ae60; color: white; border: none; border-radius: 50px;
-            font-size: 1.1rem; cursor: pointer; margin-top: 20px; transition: 0.3s;
-            display: none;
-        }
-        .btn-continue:hover { background: #219150; transform: scale(1.05); }
-
+        
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.3s; line-height: 1; }
         .close-btn:hover { color: #e74c3c; rotate: 90deg; }
-        .btn-check { padding: 10px 20px; background: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+        
         .game-block { display: none; margin-top: 10px; margin-bottom: 10px; animation: fadeInUp 0.5s ease-out; }
         .score-board { font-size: 1.1rem; color: #27ae60; font-weight: bold; margin-bottom: 10px; }
         .reset-btn { position: fixed; bottom: 10px; right: 10px; opacity: 0.6; font-size: 0.8rem; cursor: pointer; background: rgba(255,255,255,0.8); border: 1px solid #333; padding: 5px 10px; border-radius: 5px; z-index: 10; transition: 0.3s; }
@@ -108,7 +146,7 @@
         .t-btn:active { transform: translateY(4px) scale(0.95); box-shadow: 0 0 #2980b9; }
         .t-btn.rotate { background: #e67e22; box-shadow: 0 4px #d35400; }
         .t-btn.down { background: #27ae60; box-shadow: 0 4px #2ecc71; font-weight: bold; }
-        .tetris-restart { background: #e67e22; margin-top: 15px; font-size: 0.9rem; }
+        .tetris-restart { background: #e67e22; margin-top: 15px; font-size: 0.9rem; border-radius: 20px; color: white; border: none; padding: 8px 20px; cursor: pointer; }
         .tetris-restart:hover { background: #d35400; }
 
         .match3-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; width: 300px; height: 300px; margin: 0 auto; background: #ecf0f1; padding: 5px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
@@ -136,8 +174,12 @@
 </head>
 <body>
 
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
     <canvas id="fireworksCanvas"></canvas>
-    <audio id="successSound" src="with-applause.mp3"></audio>
+    <audio id="successSound" src="win.mp3"></audio>
 
     <div class="container">
         <h1><a href="index.html" title="Вернуться на главную">Выберите направление</a></h1>
@@ -183,7 +225,7 @@
                     <button class="t-btn" onclick="playerMove(1)">→</button>
                     <button class="t-btn down" onclick="playerHardDrop()">⤓</button>
                 </div>
-                <button class="btn-check tetris-restart" onclick="startTetris()">Начать заново</button>
+                <button class="tetris-restart" onclick="startTetris()">Начать заново</button>
                 <p style="font-size: 0.8rem; color:#999; margin-top:5px;">Поворот: ↑ или W. Сброс: Пробел.</p>
             </div>
 
@@ -218,6 +260,15 @@
     </div>
 
     <script>
+        /* --- СКРИПТ ПРЕЛОАДЕРА --- */
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                preloader.style.opacity = 0;
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        });
+
         /* --- САЛЮТ --- */
         const fCanvas = document.getElementById('fireworksCanvas');
         const fCtx = fCanvas.getContext('2d');

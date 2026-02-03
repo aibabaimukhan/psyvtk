@@ -1,11 +1,459 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Логический путь</title>
+    
+    <link rel="preload" as="image" href="2.webp">
+
+    <style>
+        /* ==================== ПРЕЛОАДЕР ==================== */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fdfbf7; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+        .loader {
+            width: 50px; height: 50px;
+            border: 4px solid #e0e0e0; border-top: 4px solid #f6d365;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #preloader.hide-loader { opacity: 0; visibility: hidden; }
+
+        /* ==================== ОБЩИЕ СТИЛИ ==================== */
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-image: url('2.webp'); 
+            background-size: cover; background-position: center;
+            background-attachment: fixed; background-repeat: no-repeat;
+            overflow-x: hidden; color: #333;
+        }
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.2); z-index: -1;
+        }
+
+        .container {
+            max-width: 800px; margin: 40px auto;
+            background: rgb(255 215 180 / 90%);
+            padding: 2rem; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center; position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 { color: #2c3e50; font-family: 'Georgia', serif; margin-bottom: 20px; }
+        
+        /* Кнопка "Вернуться" (Стиль Золотой Песок) */
+        .btn-back {
+            display: inline-block; margin-top: 20px; padding: 12px 30px;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a; text-decoration: none; border-radius: 50px;
+            font-weight: 800; border: 2px solid #fff; 
+            box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
+            transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
+        }
+
+        /* ==================== КАРТА (SNAKE PATH) ==================== */
+        .map-wrapper {
+            position: relative; width: 100%; max-width: 400px; height: 600px; margin: 0 auto;
+        }
+        .path-svg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+        }
+        .path-line {
+            fill: none; stroke: #d35400; stroke-width: 3; stroke-dasharray: 10, 5; opacity: 0.6;
+        }
+        .map-node {
+            position: absolute; width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: 3px solid #fff; color: #4a3b2a;
+            font-size: 1.5rem; font-weight: bold;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            transform: translate(-50%, -50%); 
+        }
+        .map-node:hover {
+            transform: translate(-50%, -50%) scale(1.15);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Координаты точек */
+        #node1 { top: 10%; left: 30%; }
+        #node2 { top: 25%; left: 70%; }
+        #node3 { top: 45%; left: 40%; }
+        #node4 { top: 65%; left: 80%; }
+        #node5 { top: 85%; left: 20%; }
+
+        /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); z-index: 1000;
+            justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; }
+
+        .modal-content {
+            background: white; padding: 30px; border-radius: 15px;
+            width: 90%; max-width: 900px; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.8); transition: transform 0.3s ease;
+            text-align: left; max-height: 85vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .close-btn {
+            position: absolute; top: 10px; right: 20px;
+            font-size: 2rem; color: #aaa; cursor: pointer;
+            line-height: 1; transition: 0.2s; z-index: 10;
+        }
+        .close-btn:hover { color: #e74c3c; }
+
+        /* Стили таблиц */
+        h2 { color: #d35400; margin-top: 0; margin-bottom: 15px; font-size: 1.3rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; vertical-align: top; }
+        th { background-color: #fce8d2; color: #4a3b2a; font-weight: bold; position: sticky; top: 0; }
+        tr:nth-child(even) { background-color: #fffcf5; }
+
+        /* Вкладки (Tabs) */
+        .tabs-header { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .tab-btn {
+            background: transparent; border: 2px solid transparent; padding: 8px 20px;
+            font-weight: bold; color: #aaa; cursor: pointer; border-radius: 20px; transition: 0.3s;
+        }
+        .tab-btn:hover { background: #fdfbf7; color: #d35400; }
+        .tab-btn.active { background: #f6d365; color: #4a3b2a; box-shadow: 0 4px 10px rgba(246, 211, 101, 0.4); }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    </style>
 </head>
 <body>
-    <h1>res 1</h1>
+
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <div class="container">
+        <h1>Ваш путь в логике</h1>
+        <p>Нажмите на номер этапа, чтобы увидеть результаты.</p>
+
+        <div class="map-wrapper">
+            <svg class="path-svg" viewBox="0 0 400 600">
+                <path class="path-line" d="M 120 60 Q 280 100 280 150 T 160 270 T 320 390 T 80 510" />
+            </svg>
+            <div class="map-node" id="node1" onclick="openModal(1)">1</div>
+            <div class="map-node" id="node2" onclick="openModal(2)">2</div>
+            <div class="map-node" id="node3" onclick="openModal(3)">3</div>
+            <div class="map-node" id="node4" onclick="openModal(4)">4</div>
+            <div class="map-node" id="node5" onclick="openModal(5)">5</div>
+        </div>
+
+        <a href="page2.html" class="btn-back">← Вернуться к выбору</a>
+    </div>
+
+    <div id="modal-1" class="modal-overlay" onclick="closeModal(1)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(1)">&times;</span>
+            <div style="padding-right: 10px;">
+                <h2 style="color: #d35400;">Краткое описание кабинета</h2>
+                <p style="margin-bottom: 10px; line-height: 1.5;">Для успешной деятельности педагога-психолога важно обеспечить его инструментарием и адекватно организовать рабочее пространство. Эффективность функционирования психологического кабинета Высшего технического колледжа базируется на соответствующем современным требованиям методическом и организационном обеспечении.</p>
+                <p style="margin-bottom: 10px; line-height: 1.5;"><strong>Характеристики:</strong> Кабинет психологической службы располагается на третьем этаже колледжа, в левом крыле корпуса №1. Площадь кабинета составляет 33,1 м². Цвет стен, пола, мебели и штор подобран по принципу использования спокойных и нейтральных тонов. Мягкая мебель и ковровое покрытие создают уют. Предельная наполняемость — 15 человек.</p>
+                <hr style="border: 0; border-top: 2px dashed #f6d365; margin: 20px 0;">
+                <h2 style="color: #d35400;">Кабинеттің қысқаша сипаттамасы</h2>
+                <p style="margin-bottom: 10px; line-height: 1.5;">Педагог-психологтың табысты қызметі үшін оны құрал-сайманмен қамтамасыз ету және жұмыс кеңістігін барабар ұйымдастыру маңызды. Жоғары техникалық колледждің психологиялық кабинетінің жұмыс істеу тиімділігі қазіргі заманғы талаптарға сәйкес әдістемелік және ұйымдастырушылық қамтамасыз етуге негізделеді.</p>
+                <p style="margin-bottom: 10px; line-height: 1.5;"><strong>Сипаттамасы:</strong> Психологиялық қызмет кабинеті колледждің үшінші қабатында, №1-корпустың сол қанатында орналасқан. Кабинеттің ауданы 33,1 м² құрайды. Қабырғалардың, еденнің, жиһаздың, перделердің түсі қосымша қозу мен тітіркенуді тудырмайтын тыныш және бейтарап тондарды қолдану принципі бойынша таңдалады. Кабинеттің шекті толымдылығы — 15 адам.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-2" class="modal-overlay" onclick="closeModal(2)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(2)">&times;</span>
+            <h2>2. Кабинеттің функционалды қолданылуы</h2>
+            <div style="overflow-x: auto;">
+                <table style="min-width: 800px;">
+                    <thead>
+                        <tr>
+                            <th>Уақыты</th><th>Дүйсенбі</th><th>Сейсенбі</th><th>Сәрсенбі</th><th>Бейсенбі</th><th>Жұма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:bold; background:#fffcf5;">9.00-12.30</td>
+                            <td>Студенттермен психодиагностикалық жұмыстар.<br><br>Дербес және топтық түзету-дамыту жұмыстары.</td>
+                            <td>Психологиялық диагностика жұмыстарының қорытындысын шығару.</td>
+                            <td>Дербес кеңес беру жұмыстары.</td>
+                            <td>Дербес және топтық дамыту жұмыстары.</td>
+                            <td>Дербес кеңес беру жұмыстары.<br><br>Психопрофилактикалық жұмыстар.</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold; background:#fffcf5;">14.00-17.30</td>
+                            <td>Қызметкерлермен кеңес беру жұмыстары.</td>
+                            <td>Құжаттармен жұмыс.</td>
+                            <td>Ұйымдастырушылық-әдістемелік жұмыстар.</td>
+                            <td>Студенттермен психопрофилактикалық жұмыстар.</td>
+                            <td>Ұйымдастырушылық-әдістемелік жұмыстар.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-3" class="modal-overlay" onclick="closeModal(3)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 700px;">
+            <span class="close-btn" onclick="closeModal(3)">&times;</span>
+            <h2>3. Перечень основного оборудования</h2>
+            <table style="font-size: 0.95rem;">
+                <thead><tr><th style="width:50px;">№</th><th>Наименование имущества</th><th style="width:100px;">Количество</th></tr></thead>
+                <tbody>
+                    <tr><td align="center">1</td><td>Рабочий стол</td><td align="center">1</td></tr>
+                    <tr><td align="center">2</td><td>Переносная парта</td><td align="center">1</td></tr>
+                    <tr><td align="center">3</td><td>Стулья</td><td align="center">7</td></tr>
+                    <tr><td align="center">4</td><td>Интерактивная доска</td><td align="center">1</td></tr>
+                    <tr><td align="center">5</td><td>Флипчарт доска</td><td align="center">1</td></tr>
+                    <tr><td align="center">6</td><td>Ковер</td><td align="center">1</td></tr>
+                    <tr><td align="center">7</td><td>Мягкое кресло</td><td align="center">2</td></tr>
+                    <tr><td align="center">8</td><td>Диван</td><td align="center">1</td></tr>
+                    <tr><td align="center">9</td><td>Шкаф</td><td align="center">2</td></tr>
+                    <tr><td align="center">10</td><td>Подсветки (кубы-светильники)</td><td align="center">3</td></tr>
+                    <tr><td align="center">11</td><td>Журнальный столик</td><td align="center">1</td></tr>
+                    <tr><td align="center">12</td><td>Проектор</td><td align="center">1</td></tr>
+                    <tr><td align="center">13</td><td>МФУ (принтер)</td><td align="center">1</td></tr>
+                    <tr><td align="center">14</td><td>Колонки + 1 сабвуфер</td><td align="center">3</td></tr>
+                    <tr><td align="center">15</td><td>Ноутбук</td><td align="center">1</td></tr>
+                    <tr><td align="center">16</td><td>Компьютер</td><td align="center">1</td></tr>
+                    <tr><td align="center">17</td><td>Ширма</td><td align="center">1</td></tr>
+                    <tr><td align="center">18</td><td>Мягкие коврики</td><td align="center">4</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modal-4" class="modal-overlay" onclick="closeModal(4)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(4)">&times;</span>
+            <h2 style="margin-bottom: 5px;">4. Әдістемелік құралдар / Методические средства</h2>
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('modal-4', 'kaz')">🇰🇿 Қазақша</button>
+                <button class="tab-btn" onclick="switchTab('modal-4', 'rus')">🇷🇺 Русский</button>
+            </div>
+
+            <div id="modal-4-kaz" class="tab-content active">
+                <div style="overflow-x: auto;">
+                    <table style="min-width: 600px;">
+                        <thead><tr><th style="width:40px;">№</th><th>Әдістемелік құралдардың тізбесі</th><th style="width:60px;">Саны</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Психологиялық практикум (оқу құралы)</td><td align="center">1</td></tr>
+                            <tr><td>2</td><td>"Педагог-психологтың негізгі есептік құжаттамасы" нұсқаулығы</td><td align="center">1</td></tr>
+                            <tr><td>3</td><td>Психологиялық тесттер</td><td align="center">1</td></tr>
+                            <tr><td>4</td><td>№1, №2 психологиялық тесттер</td><td align="center">2</td></tr>
+                            <tr><td>5</td><td>Тесттер "сіздің іскерлік қасиеттеріңіз"</td><td align="center">1</td></tr>
+                            <tr><td>6</td><td>Практикалық психологтың анықтамалығы</td><td align="center">1</td></tr>
+                            <tr><td>7</td><td>Психотехника, тренингтер, ойындар арқылы оқыту</td><td align="center">2</td></tr>
+                            <tr><td>8</td><td>Плакаттар мен брошюралар</td><td align="center">-</td></tr>
+                            <tr><td>9</td><td>"Бақытқа жол" бейне материалы + кітап</td><td align="center">1</td></tr>
+                            <tr><td>10</td><td>Колледж психологының авторлық жинағы (Электронды)</td><td align="center">1</td></tr>
+                            <tr><td>11</td><td>Медитация жинағы (Электронды)</td><td align="center">1</td></tr>
+                            <tr><td>12</td><td>«ДосболLIKE» бағдарламасы</td><td align="center">1</td></tr>
+                            <tr><td>13</td><td>Педагог-психологтардың қызметіне әдістемелік ұсыныстар</td><td align="center">1</td></tr>
+                            <tr><td>14</td><td>Психодиагностикалық әдістемелердің тізімі</td><td align="center">1</td></tr>
+                            <tr><td>15</td><td>Диагностикалық әдістемелер жинағы</td><td align="center">1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal-4-rus" class="tab-content">
+                <div style="overflow-x: auto;">
+                    <table style="min-width: 600px;">
+                        <thead><tr><th style="width:40px;">№</th><th>Перечень методических средств</th><th style="width:80px;">Количество</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Психологический практикум (учебное пособие)</td><td align="center">1</td></tr>
+                            <tr><td>2</td><td>Справочное руководство «Документация педагога-психолога»</td><td align="center">1</td></tr>
+                            <tr><td>3</td><td>Психологические тесты</td><td align="center">1</td></tr>
+                            <tr><td>4</td><td>Психологические тесты №1, №2</td><td align="center">2</td></tr>
+                            <tr><td>5</td><td>Тесты «Ваши деловые качества»</td><td align="center">1</td></tr>
+                            <tr><td>6</td><td>Справочник практического психолога</td><td align="center">1</td></tr>
+                            <tr><td>7</td><td>Общение и обучение через психотехники, тренинги, игры</td><td align="center">2</td></tr>
+                            <tr><td>8</td><td>Плакаты и брошюрки</td><td align="center">-</td></tr>
+                            <tr><td>9</td><td>Видео-материал «Дорога к счастью» + книжка</td><td align="center">1</td></tr>
+                            <tr><td>10</td><td>Авторский сборник психолога колледжа (электронный)</td><td align="center">1</td></tr>
+                            <tr><td>11</td><td>Сборник медитации (электронный)</td><td align="center">1</td></tr>
+                            <tr><td>12</td><td>Программа «ДосболLIKE» (профилактика буллинга)</td><td align="center">1</td></tr>
+                            <tr><td>13</td><td>Методические рекомендации педагогам-психологам</td><td align="center">1</td></tr>
+                            <tr><td>14</td><td>Перечень психодиагностических методик</td><td align="center">1</td></tr>
+                            <tr><td>15</td><td>Сборник диагностических методик</td><td align="center">1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-5" class="modal-overlay" onclick="closeModal(5)">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 950px;">
+            <span class="close-btn" onclick="closeModal(5)">&times;</span>
+            
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
+                5. Әдістемелік және анықтамалық әдебиеттер тізімі
+            </h2>
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('modal-5', 'kaz')">🇰🇿 Қазақша</button>
+                <button class="tab-btn" onclick="switchTab('modal-5', 'rus')">🇷🇺 Русский</button>
+            </div>
+
+            <div id="modal-5-kaz" class="tab-content active">
+                <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 30px;">№</th>
+                                <th style="border: 1px solid #aaa; padding: 8px;">Атауы</th>
+                                <th style="border: 1px solid #aaa; padding: 8px;">Автор</th>
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 50px;">Жыл</th>
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 40px;">Саны</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Психологический практикум (учебное пособие)</td><td>Д.Рамендин, О.Одинцова</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>2</td><td>Справочное руководство «Основная учетно-отчетная документация педагога – психолога»</td><td>Г.К. Ибрагимова</td><td>2003</td><td align="center">1</td></tr>
+                            <tr><td>3</td><td>Этика и психология делового общения</td><td>А.Д. Барышева, Ю.А. Матюхина</td><td>2006</td><td align="center">1</td></tr>
+                            <tr><td>4</td><td>Интенсив тренинг по развитию суперспособностей</td><td>О.Кинякина</td><td>2012</td><td align="center">1</td></tr>
+                            <tr><td>5</td><td>Психология профессионального образования</td><td>Э.Зеер, А.Павлова</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>6</td><td>Сборник Д.Карнеги</td><td>Д.Карнеги</td><td>1990</td><td align="center">1</td></tr>
+                            <tr><td>7</td><td>Психологические тесты</td><td>Н.Гребень</td><td>2014</td><td align="center">1</td></tr>
+                            <tr><td>8</td><td>Психологические тесты №1, №2</td><td>А.Карелина</td><td>2007</td><td align="center">2</td></tr>
+                            <tr><td>9</td><td>Тесты «Ваши деловые качества»</td><td>Н. Преображенская</td><td>2005</td><td align="center">1</td></tr>
+                            <tr><td>10</td><td>Психология учащегося начального профессионального образования</td><td>Т.Шульга</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>11</td><td>Философские сказки</td><td>Н.Козлов</td><td>2004</td><td align="center">1</td></tr>
+                            <tr><td>12</td><td>«Все будет хорошо»</td><td>Л.Хей</td><td>2012</td><td align="center">1</td></tr>
+                            <tr><td>13</td><td>Тренировка тела и духа</td><td>М.Норбеков</td><td>2006</td><td align="center">1</td></tr>
+                            <tr><td>14</td><td>Этико-психологические аспекты профессионального управления коллективом</td><td>Е.А. Воронов, А.Н. Тягун</td><td>1998</td><td align="center">1</td></tr>
+                            <tr><td>15</td><td>Основы психологии</td><td>Л.Столяренко</td><td>2005</td><td align="center">1</td></tr>
+                            <tr><td>16</td><td>Справочник практического психолога</td><td>И.Малкина – Пых</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>17</td><td>Педагогика</td><td>Ю. Бабанский</td><td>1983</td><td align="center">1</td></tr>
+                            <tr><td>18</td><td>Курс практической психологии №1, №2</td><td>Р.Р. Кашапов</td><td>1996</td><td align="center">2</td></tr>
+                            <tr><td>19</td><td>Общение и обучение через психотехники, тренинги, игры №1, №2</td><td>С.Познякова, О.Картошова</td><td>2002</td><td align="center">2</td></tr>
+                            <tr><td>20</td><td>Человек: психология</td><td>Я.Коломинский</td><td>1986</td><td align="center">1</td></tr>
+                            <tr><td>21</td><td>Практическая психология в тестах</td><td>И.Ермакова</td><td>1997</td><td align="center">1</td></tr>
+                            <tr><td>22</td><td>Личность и оценочные способности старшеклассников</td><td>Л.Мнацаканян</td><td>1991</td><td align="center">1</td></tr>
+                            <tr><td>23</td><td>Эстетика поведения</td><td>В.И. Толстых</td><td>1965</td><td align="center">1</td></tr>
+                            <tr><td>24</td><td>Рабочая книга школьного психолога</td><td>И.В. Дубровина</td><td>1991</td><td align="center">1</td></tr>
+                            <tr><td>25</td><td>Когнитивно-поведенческая терапия</td><td>Джудит Бек</td><td>2020</td><td align="center">1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal-5-rus" class="tab-content">
+                <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 30px;">№</th>
+                                <th style="border: 1px solid #aaa; padding: 8px;">Название</th>
+                                <th style="border: 1px solid #aaa; padding: 8px;">Автор</th>
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 50px;">Год</th>
+                                <th style="border: 1px solid #aaa; padding: 8px; width: 40px;">Кол-во</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Психологический практикум (учебное пособие)</td><td>Д.Рамендин, О.Одинцова</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>2</td><td>Справочное руководство «Основная учетно-отчетная документация педагога – психолога»</td><td>Г.К. Ибрагимова</td><td>2003</td><td align="center">1</td></tr>
+                            <tr><td>3</td><td>Этика и психология делового общения</td><td>А.Д. Барышева, Ю.А. Матюхина</td><td>2006</td><td align="center">1</td></tr>
+                            <tr><td>4</td><td>Интенсив тренинг по развитию суперспособностей</td><td>О.Кинякина</td><td>2012</td><td align="center">1</td></tr>
+                            <tr><td>5</td><td>Психология профессионального образования</td><td>Э.Зеер, А.Павлова</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>6</td><td>Сборник Д.Карнеги</td><td>Д.Карнеги</td><td>1990</td><td align="center">1</td></tr>
+                            <tr><td>7</td><td>Психологические тесты</td><td>Н.Гребень</td><td>2014</td><td align="center">1</td></tr>
+                            <tr><td>8</td><td>Психологические тесты №1, №2</td><td>А.Карелина</td><td>2007</td><td align="center">2</td></tr>
+                            <tr><td>9</td><td>Тесты «Ваши деловые качества»</td><td>Н. Преображенская</td><td>2005</td><td align="center">1</td></tr>
+                            <tr><td>10</td><td>Психология учащегося начального профессионального образования</td><td>Т.Шульга</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>11</td><td>Философские сказки</td><td>Н.Козлов</td><td>2004</td><td align="center">1</td></tr>
+                            <tr><td>12</td><td>«Все будет хорошо»</td><td>Л.Хей</td><td>2012</td><td align="center">1</td></tr>
+                            <tr><td>13</td><td>Тренировка тела и духа</td><td>М.Норбеков</td><td>2006</td><td align="center">1</td></tr>
+                            <tr><td>14</td><td>Этико-психологические аспекты профессионального управления коллективом</td><td>Е.А. Воронов, А.Н. Тягун</td><td>1998</td><td align="center">1</td></tr>
+                            <tr><td>15</td><td>Основы психологии</td><td>Л.Столяренко</td><td>2005</td><td align="center">1</td></tr>
+                            <tr><td>16</td><td>Справочник практического психолога</td><td>И.Малкина – Пых</td><td>2008</td><td align="center">1</td></tr>
+                            <tr><td>17</td><td>Педагогика</td><td>Ю. Бабанский</td><td>1983</td><td align="center">1</td></tr>
+                            <tr><td>18</td><td>Курс практической психологии №1, №2</td><td>Р.Р. Кашапов</td><td>1996</td><td align="center">2</td></tr>
+                            <tr><td>19</td><td>Общение и обучение через психотехники, тренинги, игры №1, №2</td><td>С.Познякова, О.Картошова</td><td>2002</td><td align="center">2</td></tr>
+                            <tr><td>20</td><td>Человек: психология</td><td>Я.Коломинский</td><td>1986</td><td align="center">1</td></tr>
+                            <tr><td>21</td><td>Практическая психология в тестах</td><td>И.Ермакова</td><td>1997</td><td align="center">1</td></tr>
+                            <tr><td>22</td><td>Личность и оценочные способности старшеклассников</td><td>Л.Мнацаканян</td><td>1991</td><td align="center">1</td></tr>
+                            <tr><td>23</td><td>Эстетика поведения</td><td>В.И. Толстых</td><td>1965</td><td align="center">1</td></tr>
+                            <tr><td>24</td><td>Рабочая книга школьного психолога</td><td>И.В. Дубровина</td><td>1991</td><td align="center">1</td></tr>
+                            <tr><td>25</td><td>Когнитивно-поведенческая терапия</td><td>Джудит Бек</td><td>2020</td><td align="center">1</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Прелоадер
+        const bgImageSrc = '3.png';
+        const imagePromise = new Promise((resolve) => {
+            const img = new Image(); img.src = bgImageSrc;
+            img.onload = resolve; img.onerror = resolve;
+        });
+        const windowPromise = new Promise((resolve) => window.addEventListener('load', resolve));
+        Promise.all([imagePromise, windowPromise]).then(() => {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('hide-loader');
+            setTimeout(() => preloader.style.display = 'none', 600);
+        });
+        setTimeout(() => {
+             const preloader = document.getElementById('preloader');
+             if(preloader && !preloader.classList.contains('hide-loader')) {
+                 preloader.classList.add('hide-loader');
+                 setTimeout(() => preloader.style.display = 'none', 600);
+             }
+        }, 1500);
+
+        // Логика модальных окон
+        function openModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+        function closeModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Логика табов (Вкладок)
+        function switchTab(modalId, lang) {
+            const modal = document.getElementById(modalId);
+            const buttons = modal.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('onclick').includes(lang)) btn.classList.add('active');
+            });
+            const contents = modal.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            const targetContent = document.getElementById(modalId + '-' + lang);
+            if (targetContent) targetContent.classList.add('active');
+        }
+    </script>
+
 </body>
 </html>

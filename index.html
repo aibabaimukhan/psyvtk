@@ -5,23 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Психологическая помощь</title>
     <style>
+        /* ==================== */
+        /* ПРЕЛОАДЕР */
+        /* ==================== */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #f5f7fa; /* Цвет фона, пока грузится картинка */
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader {
+            width: 50px; height: 50px;
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #f6d365; /* Цвет загрузки (под золото) */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .loader-text {
+            font-family: 'Helvetica Neue', sans-serif;
+            color: #555;
+            font-size: 0.9rem;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        #preloader.hide-loader { opacity: 0; visibility: hidden; }
+
         /* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
         body, html {
             margin: 0; padding: 0; height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             
-            /* Фон */
-            background-image: url('2.png'); /* ЗАМЕНИТЕ НА ВАШЕ ФОТО */
+            /* Фон задан здесь, но загружаем мы его через JS */
+            background-image: url('2.png'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
 
-            overflow: hidden; 
-            display: flex;
-            justify-content: center; 
-            align-items: center; 
-            color: #333;
+            overflow: hidden; display: flex; justify-content: center; align-items: center; color: #333;
         }
 
         body::before {
@@ -33,129 +65,84 @@
 
         .container {
             position: relative; z-index: 1;
-            background: rgb(255 189 131 / 29%); /* Более чистый белый фон */
-            padding: 40px; 
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Мягкая глубокая тень */
-            width: 650px; 
-            height: 480px;
+            background: rgb(231 194 138 / 78%);
+            padding: 40px; border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 650px; height: 480px;
             box-sizing: border-box;
             display: flex; flex-direction: column;
             justify-content: flex-start; align-items: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px); /* Эффект стекла */
         }
 
-        h1 { 
-            font-family: 'Georgia', serif; font-size: 2rem; margin: 0 0 25px 0; color: #2c3e50; text-align: center;
-        }
+        h1 { font-family: 'Georgia', serif; font-size: 1.8rem; margin: 0 0 20px 0; color: #2c3e50; text-align: center; }
 
         #typewriter {
-            font-size: 1.15rem; line-height: 1.6; color: #2c2c2c; font-weight: 400;
+            font-size: 1.15rem; line-height: 1.6; color: #313131;
             white-space: pre-wrap; text-align: left;
             width: 100%; flex-grow: 1;
         }
 
-        #cta-container {
-            margin-top: auto; width: 100%; text-align: center; padding-bottom: 5px;
+        #cta-container { margin-top: auto; width: 100%; text-align: center; padding-bottom: 5px; }
+
+        /* СТИЛЬ КНОПОК: ЗОЛОТОЙ ПЕСОК */
+        .btn {
+            display: inline-block; text-decoration: none;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a;
+            padding: 16px 50px; border-radius: 50px;
+            font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
+            transition: 0.3s;
         }
-
-        /* ========================================== */
-        /* НОВЫЙ СТИЛЬ КНОПОК (Modern Smooth) */
-        /* ========================================== */
-.btn {
-    display: inline-block; text-decoration: none;
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    color: #4a3b2a; /* Темно-коричневый текст для контраста */
-    padding: 16px 50px; border-radius: 50px;
-    font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
-    transition: 0.3s;
-}
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
-    background: linear-gradient(135deg, #fda085 0%, #f6d365 100%);
-}
-
-        /* Эффект нажатия */
-        .btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(0, 242, 254, 0.4);
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
+            background: linear-gradient(135deg, #fda085 0%, #f6d365 100%);
         }
+        .btn:active { transform: translateY(-1px); box-shadow: 0 5px 10px rgba(253, 160, 133, 0.4); }
 
-        /* КНОПКА ЗВУКА */
         #mute-btn {
             position: fixed; top: 25px; right: 25px; z-index: 10;
-            background: white; border: 1px solid #e0e0e0;
+            background: white; border: 1px solid #ced4da;
             padding: 10px 18px; border-radius: 12px;
             cursor: pointer; font-weight: bold; display: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        #mute-btn:hover { transform: scale(1.05); }
-        #mute-btn.off { background: #fff0f0; color: #c0392b; border-color: #ffcccc; }
+        #mute-btn.off { background: #f8d7da; }
 
-        /* КНОПКА ПРОПУСТИТЬ */
         #skip-btn {
-            position: fixed; 
-            bottom: 25px; 
-            right: 25px; 
-            z-index: 20;
-            
-            background: rgba(255, 255, 255, 0.2); 
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            opacity: 0.6; 
-            backdrop-filter: blur(5px); 
-            
-            padding: 8px 20px; 
-            border-radius: 30px;
-            cursor: pointer; 
-            font-size: 0.9rem;
-            color: #fff; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-            
-            display: none; 
-            transition: all 0.3s ease;
+            position: fixed; bottom: 25px; right: 25px; z-index: 20;
+            background: rgba(255, 255, 255, 0.4); 
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            opacity: 0.6; backdrop-filter: blur(3px);
+            padding: 8px 18px; border-radius: 30px;
+            cursor: pointer; font-size: 0.85rem; color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            display: none; transition: all 0.3s ease;
         }
-        
-        #skip-btn:hover { 
-            background: #fff; 
-            color: #333; 
-            opacity: 1; 
-            text-shadow: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: scale(1.05);
-        }
+        #skip-btn:hover { background: #fff; color: #333; opacity: 1; text-shadow: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 
         .fade-in { opacity: 0; animation: fadeInAnim 1s ease forwards; }
-        @keyframes fadeInAnim { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInAnim { from { opacity: 0; } to { opacity: 1; } }
 
-        /* МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media screen and (max-width: 768px) {
             body, html { background-attachment: scroll; height: 100%; overflow: hidden; }
             .container { width: 90%; height: auto; max-height: 85vh; padding: 25px 20px; overflow-y: auto; }
             h1 { font-size: 1.5rem; margin-bottom: 15px; }
             #typewriter { font-size: 1rem; line-height: 1.5; }
-            
-            .btn { 
-                padding: 14px 0; 
-                width: 100%; 
-                font-size: 1rem;
-            }
-
+            .btn { padding: 12px 35px; width: 100%; box-sizing: border-box; }
             #mute-btn { top: 15px; right: 15px; padding: 8px 12px; font-size: 0.8rem; }
             #skip-btn { bottom: 15px; right: 15px; padding: 8px 15px; font-size: 0.8rem; }
-        }
-        
-        @media screen and (max-width: 380px) {
-            .container { padding: 20px 15px; }
-            h1 { font-size: 1.3rem; }
-            #typewriter { font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
+
+    <div id="preloader">
+        <div class="loader"></div>
+        <div class="loader-text">Загрузка атмосферы...</div>
+    </div>
 
     <canvas id="canvas-background"></canvas>
     <audio id="myVoice" src="1.mp3"></audio>
@@ -165,7 +152,7 @@
 
     <div id="welcome-screen" class="container">
         <h1>Связь с собой</h1>
-        <p style="color: #313131; margin-bottom: 30px; text-align: center; font-size: 1.1rem;">Нажмите кнопку, чтобы начать погружение.</p>
+        <p style="color: #292929; margin-bottom: 30px; text-align: center;">Нажмите кнопку, чтобы начать погружение.</p>
         <div id="cta-container-welcome" style="margin-top: auto; width: 100%; text-align: center;">
             <button class="btn" onclick="startExperience()">Начать</button>
         </div>
@@ -177,6 +164,31 @@
     </div>
 
     <script>
+        // === ЛОГИКА ПРЕЛОАДЕРА ===
+        // Укажите здесь имя вашего фонового файла
+        const bgImageSrc = '2.png'; 
+
+        // Создаем Promise для загрузки картинки
+        const imagePromise = new Promise((resolve) => {
+            const img = new Image();
+            img.src = bgImageSrc;
+            img.onload = resolve; // Успех
+            img.onerror = resolve; // Если ошибка, всё равно продолжаем, чтобы не висел вечно
+        });
+
+        // Создаем Promise для загрузки всей страницы (скрипты, стили)
+        const windowPromise = new Promise((resolve) => {
+            window.addEventListener('load', resolve);
+        });
+
+        // Ждем выполнения ОБОИХ условий: загрузка страницы + загрузка тяжелого фона
+        Promise.all([imagePromise, windowPromise]).then(() => {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('hide-loader');
+            setTimeout(() => preloader.style.display = 'none', 800); // Удаляем из DOM
+        });
+
+        // === ОСТАЛЬНОЙ СКРИПТ ===
         const fullText = "В жизни бывают моменты, когда человеку нужна поддержка.\nКогда важно, чтобы его услышали, поняли и помогли разобраться.\n\nСегодня вы — человек, который решил найти кабинет психолога.\nНе просто любой, а профессиональный, безопасный и действительно работающий.\n\nЧтобы найти такой кабинет, нужно внимательно пройти путь и познакомиться с тем, как он устроен изнутри.";
         
         let isAudioOn = true;
@@ -197,7 +209,6 @@
 
         function skipAnimation() {
             clearTimeout(typewriterTimeout);
-
             const audio = document.getElementById('myVoice');
             audio.pause();
             audio.currentTime = 0; 
@@ -208,11 +219,9 @@
             muteBtn.classList.add('off');
 
             document.getElementById("typewriter").innerHTML = fullText;
-
             const container = document.getElementById('cta-container');
             container.innerHTML = `<a href="page2.html" class="btn fade-in">Начать поиск</a>`;
-
-            document.getElementById('skip-btn').style.display = 'none';
+            document.getElementById('skip-btn').style.display = 'none'; 
         }
 
         function toggleAudio() {
@@ -227,10 +236,8 @@
         function typeWriter(text, i) {
             if (i < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(i);
-                
                 const container = document.getElementById('text-screen');
                 container.scrollTop = container.scrollHeight;
-                
                 typewriterTimeout = setTimeout(() => typeWriter(text, i + 1), typingSpeed);
             } else {
                 const container = document.getElementById('cta-container');

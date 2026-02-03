@@ -14,7 +14,7 @@
             background-image: url('2.png'); /* ЗАМЕНИТЕ НА ВАШЕ ФОТО */
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Эффект параллакса для ПК */
+            background-attachment: fixed;
             background-repeat: no-repeat;
 
             overflow: hidden; 
@@ -24,7 +24,6 @@
             color: #333;
         }
 
-        /* Затемнение фона */
         body::before {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.2); z-index: -1;
@@ -32,128 +31,123 @@
 
         #canvas-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 
-        /* Контейнер (ПК версия) */
         .container {
             position: relative; z-index: 1;
-            background: rgb(231 194 138 / 78%);
+            background: rgb(255 189 131 / 29%); /* Более чистый белый фон */
             padding: 40px; 
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            
-            /* Размеры для ПК */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Мягкая глубокая тень */
             width: 650px; 
-            height: 480px; /* Фиксированная высота для ПК */
-            
+            height: 480px;
             box-sizing: border-box;
             display: flex; flex-direction: column;
             justify-content: flex-start; align-items: center;
-            transition: all 0.3s ease; /* Плавное изменение при повороте экрана */
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px); /* Эффект стекла */
         }
 
         h1 { 
-            font-family: 'Georgia', serif; 
-            font-size: 1.8rem; 
-            margin: 0 0 20px 0; 
-            color: #2c3e50; 
-            text-align: center;
+            font-family: 'Georgia', serif; font-size: 2rem; margin: 0 0 25px 0; color: #2c3e50; text-align: center;
         }
 
         #typewriter {
-            font-size: 1.15rem; 
-            line-height: 1.6; 
-            color: #313131;
-            white-space: pre-wrap; 
-            text-align: left;
-            width: 100%; 
-            /* Убрал min-height, чтобы на мобилках не было лишних пустот */
-            flex-grow: 1; /* Занимает все свободное место */
+            font-size: 1.15rem; line-height: 1.6; color: #2c2c2c; font-weight: 400;
+            white-space: pre-wrap; text-align: left;
+            width: 100%; flex-grow: 1;
         }
 
-        /* Блок для кнопки (прижимает её вниз) */
         #cta-container {
-            margin-top: auto;
-            width: 100%;
-            text-align: center;
-            padding-bottom: 5px;
+            margin-top: auto; width: 100%; text-align: center; padding-bottom: 5px;
         }
 
-        .btn {
-            display: inline-block; text-decoration: none;
-            background-color: #5d6d7e; color: white;
-            padding: 14px 40px; border-radius: 50px;
-            font-size: 1rem; border: none; cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        /* ========================================== */
+        /* НОВЫЙ СТИЛЬ КНОПОК (Modern Smooth) */
+        /* ========================================== */
+.btn {
+    display: inline-block; text-decoration: none;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #4a3b2a; /* Темно-коричневый текст для контраста */
+    padding: 16px 50px; border-radius: 50px;
+    font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
+    transition: 0.3s;
+}
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
+    background: linear-gradient(135deg, #fda085 0%, #f6d365 100%);
+}
 
-        /* Hover эффекты (для ПК) */
-        @media (hover: hover) {
-            .btn:hover {
-                background-color: #34495e;
-                transform: translateY(-3px);
-                box-shadow: 0 10px 20px rgba(93, 109, 126, 0.4);
-            }
-        }
-
+        /* Эффект нажатия */
         .btn:active {
             transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(93, 109, 126, 0.4);
+            box-shadow: 0 5px 10px rgba(0, 242, 254, 0.4);
         }
 
+        /* КНОПКА ЗВУКА */
         #mute-btn {
             position: fixed; top: 25px; right: 25px; z-index: 10;
-            background: white; border: 1px solid #ced4da;
+            background: white; border: 1px solid #e0e0e0;
             padding: 10px 18px; border-radius: 12px;
             cursor: pointer; font-weight: bold; display: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
         }
-        #mute-btn.off { background: #f8d7da; }
+        #mute-btn:hover { transform: scale(1.05); }
+        #mute-btn.off { background: #fff0f0; color: #c0392b; border-color: #ffcccc; }
 
-        .fade-in { opacity: 0; animation: fadeInAnim 1s ease forwards; }
-        @keyframes fadeInAnim { from { opacity: 0; } to { opacity: 1; } }
-
-        /* ========================================== */
-        /* АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА */
-        /* ========================================== */
-        @media screen and (max-width: 768px) {
-            body, html {
-                background-attachment: scroll; /* Фикс для iOS/Android */
-                height: 100%; /* На мобильных лучше 100% */
-                overflow: hidden; /* Запрет скролла всей страницы */
-            }
-
-            .container {
-                width: 90%; /* Не фиксированные пиксели, а проценты */
-                height: auto; /* Высота подстраивается под контент */
-                max-height: 85vh; /* Не больше 85% высоты экрана */
-                padding: 25px 20px; /* Чуть меньше отступы */
-                overflow-y: auto; /* Если текст не влезает - скролл внутри блока */
-            }
-
-            h1 {
-                font-size: 1.5rem; /* Чуть меньше заголовок */
-                margin-bottom: 15px;
-            }
-
-            #typewriter {
-                font-size: 1rem; /* Чуть меньше шрифт текста */
-                line-height: 1.5;
-            }
-
-            .btn {
-                padding: 12px 35px; /* Кнопка компактнее */
-                width: 100%; /* На мобильных удобно широкие кнопки */
-                box-sizing: border-box;
-            }
-
-            #mute-btn {
-                top: 15px; right: 15px; /* Ближе к краю */
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
+        /* КНОПКА ПРОПУСТИТЬ */
+        #skip-btn {
+            position: fixed; 
+            bottom: 25px; 
+            right: 25px; 
+            z-index: 20;
+            
+            background: rgba(255, 255, 255, 0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            opacity: 0.6; 
+            backdrop-filter: blur(5px); 
+            
+            padding: 8px 20px; 
+            border-radius: 30px;
+            cursor: pointer; 
+            font-size: 0.9rem;
+            color: #fff; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            
+            display: none; 
+            transition: all 0.3s ease;
         }
         
-        /* Для совсем маленьких экранов (iPhone SE и т.д.) */
+        #skip-btn:hover { 
+            background: #fff; 
+            color: #333; 
+            opacity: 1; 
+            text-shadow: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+        }
+
+        .fade-in { opacity: 0; animation: fadeInAnim 1s ease forwards; }
+        @keyframes fadeInAnim { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ */
+        @media screen and (max-width: 768px) {
+            body, html { background-attachment: scroll; height: 100%; overflow: hidden; }
+            .container { width: 90%; height: auto; max-height: 85vh; padding: 25px 20px; overflow-y: auto; }
+            h1 { font-size: 1.5rem; margin-bottom: 15px; }
+            #typewriter { font-size: 1rem; line-height: 1.5; }
+            
+            .btn { 
+                padding: 14px 0; 
+                width: 100%; 
+                font-size: 1rem;
+            }
+
+            #mute-btn { top: 15px; right: 15px; padding: 8px 12px; font-size: 0.8rem; }
+            #skip-btn { bottom: 15px; right: 15px; padding: 8px 15px; font-size: 0.8rem; }
+        }
+        
         @media screen and (max-width: 380px) {
             .container { padding: 20px 15px; }
             h1 { font-size: 1.3rem; }
@@ -165,12 +159,13 @@
 
     <canvas id="canvas-background"></canvas>
     <audio id="myVoice" src="1.mp3"></audio>
+    
     <button id="mute-btn" onclick="toggleAudio()">🔊 Звук: Вкл</button>
+    <button id="skip-btn" onclick="skipAnimation()">Пропустить ⏩</button>
 
     <div id="welcome-screen" class="container">
         <h1>Связь с собой</h1>
-        <p style="color: #292929; margin-bottom: 30px; text-align: center;">Нажмите кнопку, чтобы начать погружение.</p>
-        
+        <p style="color: #313131; margin-bottom: 30px; text-align: center; font-size: 1.1rem;">Нажмите кнопку, чтобы начать погружение.</p>
         <div id="cta-container-welcome" style="margin-top: auto; width: 100%; text-align: center;">
             <button class="btn" onclick="startExperience()">Начать</button>
         </div>
@@ -186,17 +181,38 @@
         
         let isAudioOn = true;
         const typingSpeed = 55;
+        let typewriterTimeout; 
 
         function startExperience() {
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('text-screen').style.display = 'flex';
             document.getElementById('mute-btn').style.display = 'block';
+            document.getElementById('skip-btn').style.display = 'block'; 
             
-            // Запуск аудио с обработкой ошибок
             const audio = document.getElementById('myVoice');
             audio.play().catch(e => console.log("Автозапуск блокирован или файла нет"));
             
             typeWriter(fullText, 0);
+        }
+
+        function skipAnimation() {
+            clearTimeout(typewriterTimeout);
+
+            const audio = document.getElementById('myVoice');
+            audio.pause();
+            audio.currentTime = 0; 
+            
+            isAudioOn = false;
+            const muteBtn = document.getElementById('mute-btn');
+            muteBtn.innerText = "🔇 Звук: Выкл";
+            muteBtn.classList.add('off');
+
+            document.getElementById("typewriter").innerHTML = fullText;
+
+            const container = document.getElementById('cta-container');
+            container.innerHTML = `<a href="page2.html" class="btn fade-in">Начать поиск</a>`;
+
+            document.getElementById('skip-btn').style.display = 'none';
         }
 
         function toggleAudio() {
@@ -211,14 +227,15 @@
         function typeWriter(text, i) {
             if (i < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(i);
-                // Автоскролл вниз, если текст длинный на мобильном
+                
                 const container = document.getElementById('text-screen');
                 container.scrollTop = container.scrollHeight;
                 
-                setTimeout(() => typeWriter(text, i + 1), typingSpeed);
+                typewriterTimeout = setTimeout(() => typeWriter(text, i + 1), typingSpeed);
             } else {
                 const container = document.getElementById('cta-container');
                 if(!container.innerHTML) container.innerHTML = `<a href="page2.html" class="btn fade-in">Начать поиск</a>`;
+                document.getElementById('skip-btn').style.display = 'none'; 
             }
         }
 
@@ -247,7 +264,6 @@
                 ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2); ctx.fill();
             }
         }
-        // Уменьшаем количество частиц на мобильных для производительности
         const pCount = window.innerWidth < 768 ? 25 : 40;
         for (let i = 0; i < pCount; i++) particles.push(new Particle());
         

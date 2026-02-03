@@ -4,35 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Выбор пути</title>
-    
-    <link rel="preload" as="image" href="3.webp">
-
     <style>
-        /* ==================== */
-        /* ПРЕЛОАДЕР */
-        /* ==================== */
-        #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #fdfbf7; /* Светлый теплый фон */
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s;
-        }
-
-        .loader {
-            width: 50px; height: 50px;
-            border: 4px solid #e0e0e0;
-            border-top: 4px solid #f6d365; /* Золотистый цвет */
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #preloader.hide-loader { opacity: 0; visibility: hidden; }
-
         /* ==================== */
         /* СТИЛИ И АНИМАЦИИ */
         /* ==================== */
@@ -62,16 +34,41 @@
 
         .container {
             position: relative; z-index: 1; text-align: center;
-            background: rgb(255 215 180 / 71%); padding: 3rem 4rem;
+            /* Фон чуть прозрачный персиковый */
+            background: rgb(255 215 180 / 85%); 
+            padding: 2rem 3rem; /* Чуть уменьшил отступы, чтобы текст влез */
             border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            max-width: 700px; width: 90%; animation: fadeInUp 0.8s ease-out;
+            max-width: 800px; /* Сделал пошире для текста */
+            width: 90%; 
+            max-height: 90vh; /* Ограничение высоты */
+            overflow-y: auto; /* Прокрутка, если текст не влезает */
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        h1 { font-family: 'Georgia', serif; margin-bottom: 2rem; }
+        h1 { font-family: 'Georgia', serif; margin-bottom: 1.5rem; color: #2c3e50; }
         h1 a { text-decoration: none; color: #2c3e50; cursor: pointer; transition: opacity 0.3s; }
         h1 a:hover { opacity: 0.6; }
 
-        .buttons-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        /* --- СТИЛИ ДЛЯ ТЕКСТА --- */
+        .intro-text {
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #4a3b2a;
+            margin-bottom: 30px;
+        }
+        .intro-text ul {
+            margin: 10px 0 15px 20px;
+            padding-left: 10px;
+        }
+        .intro-text li {
+            margin-bottom: 5px;
+        }
+        .intro-text strong {
+            color: #d35400;
+        }
+
+        .buttons-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
 
         /* ========================================== */
         /* СТИЛЬ КНОПОК: ЗОЛОТОЙ ПЕСОК */
@@ -104,7 +101,6 @@
             box-shadow: 0 4px 10px rgba(253, 160, 133, 0.4);
         }
 
-        /* СТИЛЬ ВЫПОЛНЕННОЙ КНОПКИ */
         .btn-success {
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
             color: #0f5740 !important;
@@ -118,47 +114,45 @@
         .btn-check { margin-top: 20px; font-size: 1rem; padding: 12px 30px; }
         .t-btn:active, .btn-color:active, .reset-btn:active { transform: scale(0.95) !important; }
 
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); z-index: 100; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease;
+        /* ПРЕЛОАДЕР */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fdfbf7; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s;
         }
-        .modal-overlay.active { opacity: 1; }
+        .loader {
+            width: 50px; height: 50px;
+            border: 4px solid #e0e0e0; border-top: 4px solid #f6d365;
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #preloader.hide-loader { opacity: 0; visibility: hidden; }
 
-        .modal-content {
-            background: white; padding: 1.5rem; border-radius: 15px; text-align: center;
-            max-width: 450px; width: 95%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
-        }
-        
-        .success-content {
-            background: white; padding: 2rem; border-radius: 20px; text-align: center;
-            max-width: 400px; width: 85%;
-            box-shadow: 0 0 50px rgba(39, 174, 96, 0.5);
-            animation: popIn 0.5s ease; border: 2px solid #2ecc71;
-        }
+        /* Остальные модальные и игровые стили */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 100; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; }
+        .modal-content { background: white; padding: 1.5rem; border-radius: 15px; text-align: center; max-width: 450px; width: 95%; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .success-content { background: white; padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px; width: 85%; box-shadow: 0 0 50px rgba(39, 174, 96, 0.5); animation: popIn 0.5s ease; border: 2px solid #2ecc71; }
         .success-icon { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 1s infinite alternate; }
-        
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; transition: color 0.3s; line-height: 1; }
         .close-btn:hover { color: #e74c3c; rotate: 90deg; }
-        
         .game-block { display: none; margin-top: 10px; margin-bottom: 10px; animation: fadeInUp 0.5s ease-out; }
         .score-board { font-size: 1.1rem; color: #27ae60; font-weight: bold; margin-bottom: 10px; }
         .reset-btn { position: fixed; bottom: 10px; right: 10px; opacity: 0.6; font-size: 0.8rem; cursor: pointer; background: rgba(255,255,255,0.8); border: 1px solid #333; padding: 5px 10px; border-radius: 5px; z-index: 10; transition: 0.3s; }
         .reset-btn:hover { opacity: 1; background: #fff; }
         .anim-item { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
-
+        
+        /* Игровые компоненты */
         .sentence-area { min-height: 50px; border-bottom: 2px solid #3498db; margin-bottom: 20px; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; transition: border-color 0.3s; }
         .words-pool { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; background: #f0f2f5; padding: 15px; border-radius: 10px; }
         .word-chip { background-color: #ecf0f1; border: 1px solid #bdc3c7; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
         .word-chip:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .sentence-area .word-chip { background-color: #3498db; color: white; border-color: #2980b9; }
-
         #snakeCanvas { background: #f0f3f4; border: 2px solid #bdc3c7; border-radius: 5px; display: block; margin: 0 auto; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
         .snake-controls { margin-top: 15px; display: flex; justify-content: center; gap: 10px; }
         .snake-btn { width: 40px; height: 40px; border-radius: 50%; border: none; background: #ddd; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .snake-btn:hover { background: #ccc; }
-
         #tetrisCanvas { background: #2c3e50; border: 2px solid #34495e; border-radius: 5px; display: block; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .tetris-controls { margin-top: 15px; display: flex; justify-content: center; gap: 15px; }
         .t-btn { width: 50px; height: 50px; border-radius: 50%; background: #3498db; color: white; font-size: 1.2rem; border: none; cursor: pointer; box-shadow: 0 4px #2980b9; transition: 0.1s; }
@@ -167,18 +161,15 @@
         .t-btn.down { background: #27ae60; box-shadow: 0 4px #2ecc71; font-weight: bold; }
         .tetris-restart { background: #e67e22; margin-top: 15px; font-size: 0.9rem; border-radius: 20px; color: white; border: none; padding: 8px 20px; cursor: pointer; }
         .tetris-restart:hover { background: #d35400; }
-
         .match3-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; width: 300px; height: 300px; margin: 0 auto; background: #ecf0f1; padding: 5px; border-radius: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
         .match3-cell { width: 100%; height: 100%; border-radius: 50%; cursor: pointer; transition: transform 0.2s, border 0.2s, background-color 0.3s; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.1); }
         .match3-cell:hover { transform: scale(1.1); z-index: 2; }
         .match3-cell.selected { border: 3px solid #333; transform: scale(0.9); }
         .match3-cell.poof { animation: popOut 0.4s forwards !important; pointer-events: none; }
-
         .odd-game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .odd-option { background: #ecf0f1; border: 1px solid #bdc3c7; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
         .odd-option:hover { background: #d6eaf8; border-color: #3498db; transform: translateY(-2px); }
         .shake-error { animation: shake 0.4s; background: #fadbd8 !important; border-color: #e74c3c !important; }
-
         .stroop-word { font-size: 3.5rem; font-weight: 800; margin: 20px 0; text-transform: uppercase; letter-spacing: 2px; transition: color 0.3s; }
         .stroop-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn-color { padding: 12px 25px; border: 2px solid #ddd; background: white; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s; min-width: 80px; }
@@ -199,12 +190,26 @@
     </div>
 
     <canvas id="fireworksCanvas"></canvas>
-    <audio id="successSound" src="win.mp3"></audio>
+    <audio id="successSound" src="with-applause.mp3"></audio>
 
     <div class="container">
-        <h1><a href="index.html" title="Вернуться на главную">Выберите направление</a></h1>
-        <p>Выполните задания для настройки вашего ментального фокуса.</p>
+        <h1><a href="index.html" title="Вернуться на главную">Как проходит игра</a></h1>
         
+        <div class="intro-text">
+            <p>Перед вами — сайт-игра, созданный в рамках конкурсной работы. В интерактивном формате вам предстоит пройти путь знакомства с психологическим кабинетом, выполняя задания и проверяя, насколько он соответствует требованиям и реальной практике.</p>
+            <p>Игра состоит из двух этапов, каждый из которых включает несколько заданий.</p>
+            
+            <p><strong>В процессе вы сможете:</strong></p>
+            <ul>
+                <li>найти кабинет психолога,</li>
+                <li>познакомиться с его пространством и зонированием,</li>
+                <li>оценить оснащение, методы работы и организацию деятельности,</li>
+                <li>увидеть практическую реализацию задач психологической службы.</li>
+            </ul>
+
+            <p><strong>Что нужно делать:</strong><br>
+            Внимательно читайте задания, выполняйте игровые элементы и двигайтесь вперёд шаг за шагом. Каждый этап — это часть пути, ведущего к пониманию, каким должен быть современный, эффективный кабинет психолога.</p>
+        </div>
         <div class="buttons-wrapper">
             <button id="btn1" class="btn-task" onclick="handleButtonClick(1)">Тренировка логики</button>
             <button id="btn2" class="btn-task" onclick="handleButtonClick(2)">Тренировка внимания</button>
@@ -281,27 +286,24 @@
 
     <script>
         /* --- СКРИПТ ПРЕЛОАДЕРА --- */
-        // Ждем загрузку картинки 3.png
-        const bgImageSrc = '3.png'; // Имя вашего файла фона
+        const bgImageSrc = '3.png'; 
         const imagePromise = new Promise((resolve) => {
             const img = new Image();
             img.src = bgImageSrc;
             img.onload = resolve;
-            img.onerror = resolve; // Если ошибка, всё равно продолжаем
+            img.onerror = resolve;
         });
         
-        // Ждем загрузку всего остального
         const windowPromise = new Promise((resolve) => {
             window.addEventListener('load', resolve);
         });
 
-        // Как только оба готовы - скрываем
         Promise.all([imagePromise, windowPromise]).then(() => {
             const preloader = document.getElementById('preloader');
             preloader.classList.add('hide-loader');
             setTimeout(() => preloader.style.display = 'none', 600);
         });
-        // Страховка: убрать через 1.5 сек в любом случае
+        
         setTimeout(() => {
              const preloader = document.getElementById('preloader');
              if(preloader && !preloader.classList.contains('hide-loader')) {
@@ -657,5 +659,3 @@
     </script>
 </body>
 </html>
-
-

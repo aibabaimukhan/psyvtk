@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат: Внимание</title>
+    
+    <link rel="preload" as="image" href="../assets/3.webp">
+
+    <style>
+        /* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-image: url('../assets/3.webp'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            
+            /* --- ИЗМЕНЕНИЕ 1: Отключаем прокрутку страницы --- */
+            overflow: hidden; 
+            
+            display: flex; justify-content: center; align-items: center; 
+            color: #333;
+        }
+
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3); z-index: -1;
+        }
+
+        .container {
+            position: relative; z-index: 1; text-align: center;
+            background: rgba(255, 255, 255, 0.95); padding: 2rem 3rem;
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            max-width: 1000px; /* Ширина для ПК */
+            width: 90%; 
+            max-height: 90vh; 
+            overflow-y: auto; /* Прокрутка работает */
+            animation: fadeInUp 0.8s ease-out;
+
+            /* --- ИЗМЕНЕНИЕ 2: Скрываем визуальную полосу прокрутки --- */
+            -ms-overflow-style: none;  /* IE и Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* Скрываем полосу для Chrome, Safari и Opera */
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        h1 { font-family: 'Georgia', serif; margin-bottom: 1rem; color: #2c3e50; margin-top: 0; font-size: 2rem; }
+        .main-desc { font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 3rem; }
+
+        /* --- ВКЛАДКИ (TABS) --- */
+        .tabs-header {
+            display: flex; justify-content: center; gap: 15px;
+            margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee;
+        }
+        .tab-btn {
+            background: transparent; border: 2px solid #ddd; padding: 10px 30px;
+            font-weight: bold; color: #999; cursor: pointer; border-radius: 30px;
+            transition: 0.3s; font-size: 1rem;
+        }
+        .tab-btn:hover { border-color: #d35400; color: #d35400; }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a; border-color: transparent;
+            box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4); transform: scale(1.05);
+        }
+
+        .lang-content { display: none; animation: fadeIn 0.6s ease; }
+        .lang-content.active { display: block; }
+
+        /* --- БЛОКИ С ВИДЕО (LAYOUT) --- */
+        .video-block {
+            display: flex;
+            flex-direction: row; /* Рядом на ПК */
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 60px;
+            text-align: left;
+        }
+
+        .description-box {
+            flex: 1;
+            background: #fffcf5; border-left: 5px solid #f6d365;
+            padding: 25px; border-radius: 12px;
+            font-size: 1rem; line-height: 1.7; color: #444;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .description-box h3 { margin-top: 0; color: #d35400; font-size: 1.2rem; margin-bottom: 15px; }
+        .description-box ul { margin: 10px 0 15px 20px; padding-left: 0; }
+        .description-box li { list-style-type: disc; margin-bottom: 8px; }
+
+        .video-wrapper {
+            flex: 0 0 320px;
+            display: flex; justify-content: center;
+        }
+
+        .video-container {
+            position: relative; width: 100%;
+            border-radius: 20px; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            background: #000;
+        }
+        
+        .shorts-mode {
+            padding-bottom: 177.77%; /* 9:16 */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 850px) {
+            .video-block {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            .video-wrapper {
+                flex: auto; width: 100%; max-width: 350px;
+            }
+        }
+
+        /* КНОПКА */
+        .btn {
+            display: inline-block; text-decoration: none;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a; padding: 18px 50px; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 800; border: 3px solid #fff; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(253, 160, 133, 0.4);
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 10px; margin-bottom: 20px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(253, 160, 133, 0.6); }
+        .btn:active { transform: translateY(-1px); box-shadow: 0 5px 10px rgba(253, 160, 133, 0.4); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="setLang('kz')">KZ</button>
+            <button class="tab-btn" onclick="setLang('ru')">RU</button>
+        </div>
+
+        <div id="header-kz" class="lang-content active">
+            <h1>Жаттығу аяқталды</h1>
+            <p class="main-desc">
+                Құттықтаймыз! Сіз "Зейін" блогын сәтті аяқтадыңыз.<br>
+                Нәтижені бекіту және демалу үшін мына материалдарды қараңыз.
+            </p>
+        </div>
+        <div id="header-ru" class="lang-content">
+            <h1>Тренировка завершена</h1>
+            <p class="main-desc">
+                Поздравляем! Вы успешно прошли блок "Внимание".<br>
+                Для закрепления результата и релаксации посмотрите эти материалы.
+            </p>
+        </div>
+        
+        <div class="video-block">
+            <div class="description-box lang-content active" id="desc1-kz">
+                <h3>🎥 Өзгеріске бейімделетін психолог кабинеті</h3>
+                <p>Біздің кабинет — бір қалыпта тұратын кеңістік емес. Ол қозғалады, түрленеді және әрбір адам мен әрбір сұранысқа бейімделеді.</p>
+                <p><strong>Бүгін — күйзелісті азайту мен медитацияға арналған тыныш аймақ:</strong> ширма, оқшауланған кеңістік, кілемшелер және қауіпсіздік пен жайлылық сезімі.</p>
+                <p><strong>Ертең — диалог алаңы:</strong> дивандар, орындықтар мен үстелдер оңай орын ауыстырып, «дөңгелек үстелден» гөрі тірі әрі еркін қарым-қатынас форматын қалыптастырады.</p>
+                <p>Мұнда бір ғана сценарий жоқ: кабинет топтық жұмыстарға, тренингтерге, талқылаулар мен рефлексияға қарай қайта құрылады. Жұмыс барысында флипчарт, тақта және интерактивті панель қолданылады — бәрі де ойды ашық жеткізуге, тыңдауға және түсінуге бағытталған.</p>
+            </div>
+
+            <div class="description-box lang-content" id="desc1-ru">
+                <h3>🎥 Кабинет, который умеет меняться</h3>
+                <p>Наш кабинет — не статичное пространство. Он движется, трансформируется и подстраивается под человека и задачу.</p>
+                <p><strong>Сегодня — тихая зона для снятия напряжения и медитации:</strong> ширма, приглушённое пространство, коврики, ощущение безопасности.</p>
+                <p><strong>Завтра — диалоговая площадка:</strong> диваны, стулья и столы легко меняют своё место, создавая формат живого общения, а не «круглого стола».</p>
+                <p>Здесь нет одного сценария: кабинет собирается под групповую работу, тренинги, обсуждения и рефлексию.</p>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container shorts-mode">
+                    <iframe src="https://www.youtube.com/embed/G4nQYmosePA" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-block">
+            <div class="description-box lang-content active" id="desc2-kz">
+                <h3>🎥 Психолог кабинеті іс жүзінде</h3>
+                <p>Психолог кабинеті — жай ғана жиһаз бен қабырғалар емес. Бұл — тірі жұмыс алаңы.</p>
+                <p>Мұнда ол диалогтың, қолдаудың және дамудың кеңістігіне айналады:</p>
+                <ul>
+                    <li>жеке консультациялар</li>
+                    <li>психодиагностика</li>
+                    <li>арт-терапия</li>
+                    <li>түзету-дамыту сабақтары</li>
+                </ul>
+                <p>Әр аймақ — жай ғана орын емес, құрал: күйзелісті азайтуға, тірек табуға, өзін түсінуге және жеке шекараларды қалыптастыруға арналған.</p>
+                <p>Психолог кабинеті — ішкі тепе-теңдікке бастар жолдың бастауы.</p>
+            </div>
+
+            <div class="description-box lang-content" id="desc2-ru">
+                <h3>🎥 Кабинет психолога в действии</h3>
+                <p>Кабинет психолога — не про мебель и стены. Это про живую работу.</p>
+                <p>Здесь он становится пространством диалога, поддержки и роста:</p>
+                <ul>
+                    <li>индивидуальные консультации</li>
+                    <li>психодиагностика</li>
+                    <li>арт-терапия</li>
+                    <li>коррекционные занятия</li>
+                </ul>
+                <p>Каждая зона — не просто место, а инструмент: для снижения напряжения, поиска опоры, понимания себя и выстраивания личных границ.</p>
+                <p>Кабинет психолога — это точка, где начинается путь к внутреннему балансу.</p>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container shorts-mode">
+                    <iframe src="https://www.youtube.com/embed/pWbMs6ArxWU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+
+        <a href="result_final.html" class="btn lang-content" id="btn-ru">Продолжить</a>
+
+    </div>
+
+    <script>
+        function setLang(lang) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase().includes(lang)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            const allContent = document.querySelectorAll('.lang-content');
+            allContent.forEach(el => el.classList.remove('active'));
+
+            const targetContent = document.querySelectorAll(`[id$="-${lang}"]`);
+            targetContent.forEach(el => el.classList.add('active'));
+        }
+    </script>
+
+</body>
+</html>

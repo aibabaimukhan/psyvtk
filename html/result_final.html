@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Қорытынды / Итоги</title>
+
+    <link rel="preload" as="image" href="3.png">
+
+    <style>
+        /* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-image: url('../assets/3.webp');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            overflow-x: hidden;
+            overflow-y: hidden; /* ❗ убрали внешний скролл */
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 550px;
+            width: 90%;
+            max-height: 95vh;
+            overflow-y: auto; /* ✅ один скролл — здесь */
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* --- ВКЛАДКИ --- */
+        .tabs-header {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 2px solid #ddd;
+            padding: 8px 20px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn:hover {
+            border-color: #d35400;
+            color: #d35400;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a;
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4);
+            transform: scale(1.05);
+        }
+
+        .lang-content {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        /* --- ТЕКСТ --- */
+        .quote-box {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #fffcf5;
+            border-radius: 15px;
+            border: 1px solid #fce8d2;
+        }
+
+        .signature {
+            margin-top: 15px;
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .signature strong {
+            display: block;
+            font-size: 1rem;
+            margin-top: 5px;
+            color: #d35400;
+            font-style: normal;
+        }
+
+        /* --- ВИДЕО --- */
+        .video-container {
+            position: relative;
+            margin: 0 auto 15px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: #000;
+        }
+
+        /* Компактный Shorts */
+        .shorts-mode {
+            width: 100%;
+            max-width: 180px;
+            padding-bottom: 140%; /* ⬅ уменьшенная высота */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- КНОПКА --- */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #4a3b2a;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            border: 2px solid #fff;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(253, 160, 133, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(253, 160, 133, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(253, 160, 133, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="tabs-header">
+        <button class="tab-btn active" onclick="setLang('kz')">KZ</button>
+        <button class="tab-btn" onclick="setLang('ru')">RU</button>
+    </div>
+
+    <div id="content-kz" class="lang-content active">
+        <div class="quote-box">
+            <p>Осы ойынды соңына дейін бірге өткені­ңіз үшін рақмет.<br>
+            Психолог кабинеті — бұл жай ғана қабырғалар емес, бұл — адамдар мен мән-мағына екенін тағы да айтқым келеді.</p>
+
+            <div class="signature">
+                Сіздермен бірге болған<br>
+                «Үздік психолог кабинеті» байқауының қатысушысы,<br>
+                педагог-психолог
+                <strong>Айман Жанатовна Баймуханова</strong>
+            </div>
+
+            <p style="margin-top:15px;font-weight:bold;color:#d35400;font-size:0.9rem;">
+                Қолдау мен сенім кеңістігінде қайта кездескенше 🤍
+            </p>
+        </div>
+    </div>
+
+    <div id="content-ru" class="lang-content">
+        <div class="quote-box">
+            <p>Спасибо, что прошли эту игру до конца.<br>
+            Хочу еще раз сказать, что кабинет психолога — это не стены, а люди и смыслы.</p>
+
+            <div class="signature">
+                С вами была<br>
+                Айман Жанатовна Баймуханова,<br>
+                педагог-психолог, участник конкурса
+                <strong>«Лучший кабинет психолога»</strong>
+            </div>
+
+            <p style="margin-top:15px;font-weight:bold;color:#d35400;font-size:0.9rem;">
+                До встречи в пространстве поддержки 🤍
+            </p>
+        </div>
+    </div>
+
+    <div class="video-container shorts-mode">
+        <iframe src="https://www.youtube.com/embed/3i2n-YgsD-M"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+    </div>
+
+
+    <a href="page2.html" class="btn lang-content" id="btn-ru">Вернуться к заданиям</a>
+
+</div>
+
+<script>
+function setLang(lang) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.innerText.toLowerCase().includes(lang)) {
+            btn.classList.add('active');
+        }
+    });
+
+    document.querySelectorAll('.lang-content').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    if (lang === 'kz') {
+        document.getElementById('content-kz').classList.add('active');
+        document.getElementById('btn-kz').classList.add('active');
+    } else {
+        document.getElementById('content-ru').classList.add('active');
+        document.getElementById('btn-ru').classList.add('active');
+    }
+}
+</script>
+
+</body>
+</html>

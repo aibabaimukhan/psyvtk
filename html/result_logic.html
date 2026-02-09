@@ -168,127 +168,74 @@
     <div id="modal-1" class="modal-overlay" onclick="closeModal(1)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-btn" onclick="closeModal(1)">&times;</span>
-            <div style="padding-right: 10px;">
-                <h2 style="color: #d35400;">Краткое описание кабинета</h2>
-                <p style="margin-bottom: 10px; line-height: 1.5;">Для успешной деятельности педагога-психолога важно обеспечить его инструментарием и адекватно организовать рабочее пространство. Эффективность функционирования психологического кабинета Высшего технического колледжа базируется на соответствующем современным требованиям методическом и организационном обеспечении.</p>
-                <p style="margin-bottom: 10px; line-height: 1.5;"><strong>Характеристики:</strong> Кабинет психологической службы располагается на третьем этаже колледжа, в левом крыле корпуса №1. Площадь кабинета составляет 33,1 м². Цвет стен, пола, мебели и штор подобран по принципу использования спокойных и нейтральных тонов. Мягкая мебель и ковровое покрытие создают уют. Предельная наполняемость — 15 человек.</p>
-                <hr style="border: 0; border-top: 2px dashed #f6d365; margin: 20px 0;">
+            
+            
+            <img src="../assets/666.jpeg" alt="Кабинет психолога" style="width: 100%; border-radius: 10px; margin-bottom: 20px; object-fit: cover; max-height: 600px; display: block;">
+
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('modal-1', 'kaz')">KZ</button>
+                <button class="tab-btn" onclick="switchTab('modal-1', 'rus')">RU</button>
+            </div>
+
+            <div id="modal-1-kaz" class="tab-content active" style="padding-right: 10px;">
                 <h2 style="color: #d35400;">Кабинеттің қысқаша сипаттамасы</h2>
                 <p style="margin-bottom: 10px; line-height: 1.5;">Педагог-психологтың табысты қызметі үшін оны құрал-сайманмен қамтамасыз ету және жұмыс кеңістігін барабар ұйымдастыру маңызды. Жоғары техникалық колледждің психологиялық кабинетінің жұмыс істеу тиімділігі қазіргі заманғы талаптарға сәйкес әдістемелік және ұйымдастырушылық қамтамасыз етуге негізделеді.</p>
                 <p style="margin-bottom: 10px; line-height: 1.5;"><strong>Сипаттамасы:</strong> Психологиялық қызмет кабинеті колледждің үшінші қабатында, №1-корпустың сол қанатында орналасқан. Кабинеттің ауданы 33,1 м² құрайды. Қабырғалардың, еденнің, жиһаздың, перделердің түсі қосымша қозу мен тітіркенуді тудырмайтын тыныш және бейтарап тондарды қолдану принципі бойынша таңдалады. Кабинеттің шекті толымдылығы — 15 адам.</p>
             </div>
+
+            <div id="modal-1-rus" class="tab-content" style="padding-right: 10px;">
+                <h2 style="color: #d35400;">Краткое описание кабинета</h2>
+                <p style="margin-bottom: 10px; line-height: 1.5;">Для успешной деятельности педагога-психолога важно обеспечить его инструментарием и адекватно организовать рабочее пространство. Эффективность функционирования психологического кабинета Высшего технического колледжа базируется на соответствующем современным требованиям методическом и организационном обеспечении.</p>
+                <p style="margin-bottom: 10px; line-height: 1.5;"><strong>Характеристики:</strong> Кабинет психологической службы располагается на третьем этаже колледжа, в левом крыле корпуса №1. Площадь кабинета составляет 33,1 м². Цвет стен, пола, мебели и штор подобран по принципу использования спокойных и нейтральных тонов. Мягкая мебель и ковровое покрытие создают уют. Предельная наполняемость — 15 человек.</p>
+            </div>
         </div>
     </div>
 
-   <div id="modal-2" class="modal-overlay" onclick="closeModal(2)">
+    <div id="modal-2" class="modal-overlay" onclick="closeModal(2)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 950px;">
             <span class="close-btn" onclick="closeModal(2)">&times;</span>
-            
-            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
-                2. Кабинеттің функционалды қолданылуы / Функциональное использование
-            </h2>
-
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">2. Кабинеттің функционалды қолданылуы / Функциональное использование</h2>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('modal-2', 'kaz')">KZ</button>
                 <button class="tab-btn" onclick="switchTab('modal-2', 'rus')">RU</button>
             </div>
-
             <div id="modal-2-kaz" class="tab-content active">
                 <div style="overflow-x: auto; max-height: 70vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.9rem;">
-                        <thead>
-                            <tr style="background-color: #fce8d2;">
-                                <th style="border: 1px solid #ddd; padding: 10px;">Уақыты</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Дүйсенбі</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Сейсенбі</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Сәрсенбі</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Бейсенбі</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Жұма</th>
-                            </tr>
-                        </thead>
+                        <thead><tr style="background-color: #fce8d2;"><th style="border: 1px solid #ddd; padding: 10px;">Уақыты</th><th style="border: 1px solid #ddd; padding: 10px;">Дүйсенбі</th><th style="border: 1px solid #ddd; padding: 10px;">Сейсенбі</th><th style="border: 1px solid #ddd; padding: 10px;">Сәрсенбі</th><th style="border: 1px solid #ddd; padding: 10px;">Бейсенбі</th><th style="border: 1px solid #ddd; padding: 10px;">Жұма</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психодиагностикалық жұмыстар.<br><br>Дербес және топтық түзету-дамыту жұмыстары.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Психологиялық диагностика жұмыстарының қорытындысын шығару.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес және топтық дамыту жұмыстары.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.<br><br>Студенттермен және ата-аналармен психопрофилактикалық жұмыстар.</td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Қызметкерлермен кеңес беру жұмыстары.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Құжаттармен жұмыс.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психопрофилактикалық жұмыстар.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td>
-                            </tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td><td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психодиагностикалық жұмыстар.<br><br>Дербес және топтық түзету-дамыту жұмыстары.</td><td style="border: 1px solid #ddd; padding: 10px;">Психологиялық диагностика жұмыстарының қорытындысын шығару.</td><td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.</td><td style="border: 1px solid #ddd; padding: 10px;">Дербес және топтық дамыту жұмыстары.</td><td style="border: 1px solid #ddd; padding: 10px;">Дербес кеңес беру жұмыстары.<br><br>Студенттермен және ата-аналармен психопрофилактикалық жұмыстар.</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td><td style="border: 1px solid #ddd; padding: 10px;">Қызметкерлермен кеңес беру жұмыстары.</td><td style="border: 1px solid #ddd; padding: 10px;">Құжаттармен жұмыс.</td><td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td><td style="border: 1px solid #ddd; padding: 10px;">Студенттермен психопрофилактикалық жұмыстар.</td><td style="border: 1px solid #ddd; padding: 10px;">Ұйымдастырушылық-әдістемелік жұмыстар.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
             <div id="modal-2-rus" class="tab-content">
                 <div style="overflow-x: auto; max-height: 70vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.9rem;">
-                        <thead>
-                            <tr style="background-color: #fce8d2;">
-                                <th style="border: 1px solid #ddd; padding: 10px;">Время</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Понедельник</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Вторник</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Среда</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Четверг</th>
-                                <th style="border: 1px solid #ddd; padding: 10px;">Пятница</th>
-                            </tr>
-                        </thead>
+                        <thead><tr style="background-color: #fce8d2;"><th style="border: 1px solid #ddd; padding: 10px;">Время</th><th style="border: 1px solid #ddd; padding: 10px;">Понедельник</th><th style="border: 1px solid #ddd; padding: 10px;">Вторник</th><th style="border: 1px solid #ddd; padding: 10px;">Среда</th><th style="border: 1px solid #ddd; padding: 10px;">Четверг</th><th style="border: 1px solid #ddd; padding: 10px;">Пятница</th></tr></thead>
                         <tbody>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Психодиагностическая работа со студентами (проективные методики, тестирование, опрос, анкетирование).<br><br>Индивидуальная, групповая коррекционно-развивающая работа.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Обработка данных диагностических обследований.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная, групповая коррекционно-развивающая работа (поведенческая терапия).</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.<br><br>Психопрофилактическая работа со студентами, так же с родителями.</td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Консультационная работа с сотрудниками.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Работа с документами.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Психопрофилактическая работа со студентами (психологические игры, тренинги, релаксация).</td>
-                                <td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td>
-                            </tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">9.00-<br>12.30</td><td style="border: 1px solid #ddd; padding: 10px;">Психодиагностическая работа со студентами (проективные методики, тестирование, опрос, анкетирование).<br><br>Индивидуальная, групповая коррекционно-развивающая работа.</td><td style="border: 1px solid #ddd; padding: 10px;">Обработка данных диагностических обследований.</td><td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.</td><td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная, групповая коррекционно-развивающая работа (поведенческая терапия).</td><td style="border: 1px solid #ddd; padding: 10px;">Индивидуальная работа.<br><br>Психопрофилактическая работа со студентами, так же с родителями.</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 10px; font-weight: bold; background: #fffcf5;">14.00-<br>17.30</td><td style="border: 1px solid #ddd; padding: 10px;">Консультационная работа с сотрудниками.</td><td style="border: 1px solid #ddd; padding: 10px;">Работа с документами.</td><td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td><td style="border: 1px solid #ddd; padding: 10px;">Психопрофилактическая работа со студентами (психологические игры, тренинги, релаксация).</td><td style="border: 1px solid #ddd; padding: 10px;">Организационно-методическая работа.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div id="modal-3" class="modal-overlay" onclick="closeModal(3)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 800px;">
             <span class="close-btn" onclick="closeModal(3)">&times;</span>
-            
-            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
-                3. Негізгі жабдықтардың тізімі / Перечень основного оборудования
-            </h2>
-
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">3. Негізгі жабдықтардың тізімі / Перечень основного оборудования</h2>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('modal-3', 'kaz')">KZ</button>
                 <button class="tab-btn" onclick="switchTab('modal-3', 'rus')">RU</button>
             </div>
-
             <div id="modal-3-kaz" class="tab-content active">
                 <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9rem;">
-                        <thead>
-                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
-                                <th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th>
-                                <th style="border: 1px solid #aaa; padding: 10px;">Мүліктің атауы</th>
-                                <th style="border: 1px solid #aaa; padding: 10px; width: 60px;">Саны</th>
-                            </tr>
-                        </thead>
+                        <thead><tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;"><th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th><th style="border: 1px solid #aaa; padding: 10px;">Мүліктің атауы</th><th style="border: 1px solid #aaa; padding: 10px; width: 60px;">Саны</th></tr></thead>
                         <tbody>
                             <tr><td>1.</td><td>Жұмыс үстелі</td><td style="text-align: center;">1</td></tr>
                             <tr><td>2</td><td>Портативті парта</td><td style="text-align: center;">1</td></tr>
@@ -312,17 +259,10 @@
                     </table>
                 </div>
             </div>
-
             <div id="modal-3-rus" class="tab-content">
                 <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.9rem;">
-                        <thead>
-                            <tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;">
-                                <th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th>
-                                <th style="border: 1px solid #aaa; padding: 10px;">Наименование имущества</th>
-                                <th style="border: 1px solid #aaa; padding: 10px; width: 100px;">количество</th>
-                            </tr>
-                        </thead>
+                        <thead><tr style="background-color: #fce8d2; position: sticky; top: 0; z-index: 2;"><th style="border: 1px solid #aaa; padding: 10px; width: 40px;">№</th><th style="border: 1px solid #aaa; padding: 10px;">Наименование имущества</th><th style="border: 1px solid #aaa; padding: 10px; width: 100px;">количество</th></tr></thead>
                         <tbody>
                             <tr><td>1.</td><td>Рабочий стол</td><td style="text-align: center;">1</td></tr>
                             <tr><td>2</td><td>Переносная парта</td><td style="text-align: center;">1</td></tr>
@@ -346,7 +286,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -358,7 +297,6 @@
                 <button class="tab-btn active" onclick="switchTab('modal-4', 'kaz')">KZ</button>
                 <button class="tab-btn" onclick="switchTab('modal-4', 'rus')">RU</button>
             </div>
-
             <div id="modal-4-kaz" class="tab-content active">
                 <div style="overflow-x: auto;">
                     <table style="min-width: 600px;">
@@ -383,7 +321,6 @@
                     </table>
                 </div>
             </div>
-
             <div id="modal-4-rus" class="tab-content">
                 <div style="overflow-x: auto;">
                     <table style="min-width: 600px;">
@@ -414,16 +351,11 @@
     <div id="modal-5" class="modal-overlay" onclick="closeModal(5)">
         <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 950px;">
             <span class="close-btn" onclick="closeModal(5)">&times;</span>
-            
-            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">
-                5. Әдістемелік және анықтамалық әдебиеттер тізімі
-            </h2>
-
+            <h2 style="color: #d35400; margin-bottom: 15px; font-size: 1.2rem;">5. Әдістемелік және анықтамалық әдебиеттер тізімі</h2>
             <div class="tabs-header">
                 <button class="tab-btn active" onclick="switchTab('modal-5', 'kaz')">KZ</button>
                 <button class="tab-btn" onclick="switchTab('modal-5', 'rus')">RU</button>
             </div>
-
             <div id="modal-5-kaz" class="tab-content active">
                 <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem;">
@@ -466,7 +398,6 @@
                     </table>
                 </div>
             </div>
-
             <div id="modal-5-rus" class="tab-content">
                 <div style="overflow-x: auto; max-height: 65vh; overflow-y: auto;">
                     <table style="width: 100%; border-collapse: collapse; min-width: 800px; font-size: 0.85rem;">
@@ -509,7 +440,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -563,4 +493,3 @@
 
 </body>
 </html>
-

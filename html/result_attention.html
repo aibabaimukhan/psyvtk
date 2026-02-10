@@ -7,9 +7,6 @@
     
     <link rel="preload" as="image" href="../assets/3.webp">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-
     <style>
         /* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
         body, html {
@@ -20,10 +17,7 @@
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            
-            /* Отключаем прокрутку страницы */
             overflow: hidden; 
-            
             display: flex; justify-content: center; align-items: center; 
             color: #333;
         }
@@ -42,10 +36,9 @@
             max-height: 90vh; 
             overflow-y: auto; 
             animation: fadeInUp 0.8s ease-out;
-
+            
             /* Скрываем полосу прокрутки */
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            -ms-overflow-style: none; scrollbar-width: none;
         }
         .container::-webkit-scrollbar { display: none; }
 
@@ -75,7 +68,7 @@
         /* Блоки контента */
         .video-block {
             display: flex; flex-direction: row; align-items: flex-start;
-            justify-content: space-between; gap: 40px; margin-bottom: 60px; text-align: left;
+            justify-content: space-between; gap: 40px; margin-bottom: 40px; text-align: left;
         }
 
         .description-box {
@@ -101,31 +94,15 @@
         .shorts-mode { padding-bottom: 177.77%; height: 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* --- СТИЛИ ДЛЯ 3D ТУРА --- */
-        .tour-section { margin-bottom: 40px; text-align: left; }
-        .tour-title { color: #d35400; font-size: 1.4rem; margin-bottom: 15px; font-weight: bold; text-align: center; }
-        
-        #panorama {
-            width: 100%;
-            height: 450px; /* Высота окна 3D тура */
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            background-color: #eee;
-            position: relative;
-        }
-        
-        /* Убираем лишние элементы плеера */
-        .pnlm-load-box { display: none !important; } 
-        .pnlm-panorama-info { display: none !important; }
-
-        /* Адаптивность */
-        @media (max-width: 850px) {
-            .video-block { flex-direction: column; align-items: center; gap: 20px; }
-            .video-wrapper { flex: auto; width: 100%; max-width: 350px; }
-            #panorama { height: 300px; }
+        /* --- КНОПКИ --- */
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* Кнопка */
         .btn {
             display: inline-block; text-decoration: none;
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
@@ -133,13 +110,27 @@
             font-size: 1.2rem; font-weight: 800; border: 3px solid #fff; cursor: pointer;
             box-shadow: 0 10px 25px rgba(253, 160, 133, 0.4);
             transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;
-            margin-top: 10px; margin-bottom: 20px;
+            width: 100%; max-width: 400px;
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(253, 160, 133, 0.6); }
         .btn:active { transform: translateY(-1px); box-shadow: 0 5px 10px rgba(253, 160, 133, 0.4); }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Стиль для кнопки Тура (немного отличается цветом) */
+        .btn-tour {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #2c3e50;
+            box-shadow: 0 10px 25px rgba(132, 250, 176, 0.4);
+        }
+        .btn-tour:hover {
+            background: linear-gradient(135deg, #8fd3f4 0%, #84fab0 100%);
+            box-shadow: 0 15px 30px rgba(132, 250, 176, 0.6);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 850px) {
+            .video-block { flex-direction: column; align-items: center; gap: 20px; }
+            .video-wrapper { flex: auto; width: 100%; max-width: 350px; }
+        }
     </style>
 </head>
 <body>
@@ -226,36 +217,18 @@
             </div>
         </div>
 
-        <div class="tour-section">
-            <h2 id="tour-title-kz" class="tour-title lang-content active">🏛 Виртуалды 3D тур / Виртуальный 3D тур</h2>
-            <h2 id="tour-title-ru" class="tour-title lang-content">🏛 Виртуальный 3D тур / Виртуалды 3D тур</h2>
+        <div class="btn-container">
             
-            <div id="panorama"></div>
+
+            <a href="../app-files/index.html" target="_blank" class="btn btn-tour lang-content" id="tour-btn-ru">🏛 Открыть Виртуальный 3D тур</a>
+
+            <a href="result_final.html" class="btn lang-content" id="btn-ru">Продолжить</a>
+            
         </div>
-
-
-        <a href="result_final.html" class="btn lang-content" id="btn-ru">Продолжить</a>
 
     </div>
 
     <script>
-        // Инициализация 3D тура
-        pannellum.viewer('panorama', {
-            "type": "equirectangular",
-            
-            /* ПРОВЕРЬТЕ:
-               1. Папка assets должна лежать РЯДОМ с этим html файлом.
-               2. Внутри папки assets должен быть файл cabinet.jpeg
-               3. Если не работает двойным кликом — запустите через Live Server!
-            */
-            "panorama": "../assets/cabinet.jpeg", 
-            
-            "autoLoad": true,
-            "autoRotate": -2,
-            "compass": false
-        });
-
-        // Функция переключения языка
         function setLang(lang) {
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(btn => {

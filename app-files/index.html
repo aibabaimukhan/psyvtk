@@ -7,10 +7,44 @@
 <style> @-ms-viewport { width: device-width; } </style>
 <link rel="stylesheet" href="vendor/reset.min.css">
 <link rel="stylesheet" href="style.css">
+
+<style>
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 9999; /* Чтобы была поверх всего */
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    color: #d35400; /* Оранжевый при наведении */
+  }
+</style>
+
 </head>
 <body class="single-scene ">
 
 <div id="pano"></div>
+
+<a href="../result_attention.html" class="back-btn">
+  ← Назад / Артқа
+</a>
 
 <div id="sceneList">
   <ul class="scenes">

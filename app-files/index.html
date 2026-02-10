@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Project Title</title>
+<title>3D Tour</title>
 <meta charset="utf-8">
 <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
 <style> @-ms-viewport { width: device-width; } </style>
@@ -9,11 +9,12 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+  /* Кнопка Назад (Слева) */
   .back-btn {
     position: absolute;
     top: 20px;
     left: 20px;
-    z-index: 9999; /* Чтобы была поверх всего */
+    z-index: 9999;
     background: rgba(255, 255, 255, 0.9);
     color: #333;
     text-decoration: none;
@@ -28,12 +29,79 @@
     align-items: center;
     gap: 8px;
   }
-
   .back-btn:hover {
     background: #fff;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    color: #d35400; /* Оранжевый при наведении */
+    color: #d35400;
+  }
+
+  /* Информационное окошко (Справа) */
+  .info-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px; /* Фиксированная ширина */
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    z-index: 9999;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    backdrop-filter: blur(5px);
+  }
+
+  /* Вкладки в инфо-окне */
+  .info-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  .info-tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #999;
+    padding: 5px 0;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .info-tab-btn:hover { color: #d35400; }
+
+  .info-tab-btn.active {
+    color: #d35400; /* Оранжевый акцент */
+    border-bottom: 2px solid #d35400;
+  }
+
+  /* Текст в инфо-окне */
+  .info-text {
+    display: none; /* Скрыто по умолчанию */
+    font-size: 14px;
+    line-height: 1.6;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .info-text.active {
+    display: block; /* Показываем активный язык */
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Адаптивность для телефонов */
+  @media (max-width: 600px) {
+    .back-btn { padding: 8px 15px; font-size: 14px; }
+    .info-overlay {
+        top: 70px; /* Сдвигаем ниже кнопки назад */
+        left: 10px;
+        right: 10px;
+        width: auto; /* На всю ширину */
+    }
   }
 </style>
 
@@ -42,17 +110,40 @@
 
 <div id="pano"></div>
 
-<a href="../html/result_attention.html" class="back-btn">
+<a href="../result_attention.html" class="back-btn">
   ← Назад / Артқа
 </a>
 
+<div class="info-overlay">
+    <div class="info-tabs">
+        <button class="info-tab-btn active" onclick="switchTourTab('kz')">KZ</button>
+        <button class="info-tab-btn" onclick="switchTourTab('ru')">RU</button>
+    </div>
+
+    <div id="tour-text-kz" class="info-text active">
+        <p style="margin-bottom: 10px;">
+            Осы кезеңде 3D-тур кабинетінің нақты жағдайын көрсетеді — дәл қазіргі уақытта мен жұмыс істеп отырған конфигурациясында.
+        </p>
+        <p>
+            Қазіргі уақытта негізгі назар жеке консультациялық жұмысқа аударылған, сондықтан кеңістік сол мақсатқа сәйкес ұйымдастырылған.
+        </p>
+    </div>
+
+    <div id="tour-text-ru" class="info-text">
+        <p style="margin-bottom: 10px;">
+            На данный период 3D-тур отражает актуальное состояние кабинета — именно в той конфигурации, в которой я работаю сейчас.
+        </p>
+        <p>
+            В настоящее время акцент сделан на консультативной деятельности, поэтому пространство организовано с приоритетом индивидуальной работы.
+        </p>
+    </div>
+</div>
+
 <div id="sceneList">
   <ul class="scenes">
-    
       <a href="javascript:void(0)" class="scene" data-id="0-cabinet">
         <li class="text">cabinet</li>
       </a>
-    
   </ul>
 </div>
 
@@ -100,6 +191,26 @@
 
 <script src="data.js"></script>
 <script src="index.js"></script>
+
+<script>
+    function switchTourTab(lang) {
+        // Переключаем кнопки
+        var buttons = document.querySelectorAll('.info-tab-btn');
+        buttons.forEach(function(btn) {
+            btn.classList.remove('active');
+            if (btn.innerText.toLowerCase() === lang) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Переключаем текст
+        var texts = document.querySelectorAll('.info-text');
+        texts.forEach(function(el) {
+            el.classList.remove('active');
+        });
+        document.getElementById('tour-text-' + lang).classList.add('active');
+    }
+</script>
 
 </body>
 </html>

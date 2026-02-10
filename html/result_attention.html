@@ -7,6 +7,9 @@
     
     <link rel="preload" as="image" href="../assets/3.webp">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
     <style>
         /* ==================== ОСНОВНЫЕ СТИЛИ ==================== */
         body, html {
@@ -18,7 +21,7 @@
             background-attachment: fixed;
             background-repeat: no-repeat;
             
-            /* --- ИЗМЕНЕНИЕ 1: Отключаем прокрутку страницы --- */
+            /* Отключаем прокрутку страницы */
             overflow: hidden; 
             
             display: flex; justify-content: center; align-items: center; 
@@ -34,26 +37,22 @@
             position: relative; z-index: 1; text-align: center;
             background: rgba(255, 255, 255, 0.95); padding: 2rem 3rem;
             border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            max-width: 1000px; /* Ширина для ПК */
+            max-width: 1000px; 
             width: 90%; 
             max-height: 90vh; 
-            overflow-y: auto; /* Прокрутка работает */
+            overflow-y: auto; 
             animation: fadeInUp 0.8s ease-out;
 
-            /* --- ИЗМЕНЕНИЕ 2: Скрываем визуальную полосу прокрутки --- */
-            -ms-overflow-style: none;  /* IE и Edge */
-            scrollbar-width: none;  /* Firefox */
+            /* Скрываем полосу прокрутки */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-
-        /* Скрываем полосу для Chrome, Safari и Opera */
-        .container::-webkit-scrollbar {
-            display: none;
-        }
+        .container::-webkit-scrollbar { display: none; }
 
         h1 { font-family: 'Georgia', serif; margin-bottom: 1rem; color: #2c3e50; margin-top: 0; font-size: 2rem; }
         .main-desc { font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 3rem; }
 
-        /* --- ВКЛАДКИ (TABS) --- */
+        /* Вкладки */
         .tabs-header {
             display: flex; justify-content: center; gap: 15px;
             margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee;
@@ -73,15 +72,10 @@
         .lang-content { display: none; animation: fadeIn 0.6s ease; }
         .lang-content.active { display: block; }
 
-        /* --- БЛОКИ С ВИДЕО (LAYOUT) --- */
+        /* Блоки контента */
         .video-block {
-            display: flex;
-            flex-direction: row; /* Рядом на ПК */
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 40px;
-            margin-bottom: 60px;
-            text-align: left;
+            display: flex; flex-direction: row; align-items: flex-start;
+            justify-content: space-between; gap: 40px; margin-bottom: 60px; text-align: left;
         }
 
         .description-box {
@@ -95,10 +89,7 @@
         .description-box ul { margin: 10px 0 15px 20px; padding-left: 0; }
         .description-box li { list-style-type: disc; margin-bottom: 8px; }
 
-        .video-wrapper {
-            flex: 0 0 320px;
-            display: flex; justify-content: center;
-        }
+        .video-wrapper { flex: 0 0 320px; display: flex; justify-content: center; }
 
         .video-container {
             position: relative; width: 100%;
@@ -107,28 +98,34 @@
             background: #000;
         }
         
-        .shorts-mode {
-            padding-bottom: 177.77%; /* 9:16 */
-            height: 0;
-        }
+        .shorts-mode { padding-bottom: 177.77%; height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        .video-container iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        /* --- СТИЛИ ДЛЯ 3D ТУРА --- */
+        .tour-section { margin-bottom: 40px; text-align: left; }
+        .tour-title { color: #d35400; font-size: 1.4rem; margin-bottom: 15px; font-weight: bold; text-align: center; }
+        
+        #panorama {
+            width: 100%;
+            height: 450px; /* Высота окна 3D тура */
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background-color: #eee;
+            position: relative;
         }
+        
+        /* Убираем лишние элементы плеера */
+        .pnlm-load-box { display: none !important; } 
+        .pnlm-panorama-info { display: none !important; }
 
-        /* --- АДАПТИВНОСТЬ --- */
+        /* Адаптивность */
         @media (max-width: 850px) {
-            .video-block {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
-            .video-wrapper {
-                flex: auto; width: 100%; max-width: 350px;
-            }
+            .video-block { flex-direction: column; align-items: center; gap: 20px; }
+            .video-wrapper { flex: auto; width: 100%; max-width: 350px; }
+            #panorama { height: 300px; }
         }
 
-        /* КНОПКА */
+        /* Кнопка */
         .btn {
             display: inline-block; text-decoration: none;
             background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
@@ -188,7 +185,7 @@
 
             <div class="video-wrapper">
                 <div class="video-container shorts-mode">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/EUAywqXQ0G8?si=DCsEGsHIhgcpOXMD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/EUAywqXQ0G8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -229,12 +226,36 @@
             </div>
         </div>
 
+        <div class="tour-section">
+            <h2 id="tour-title-kz" class="tour-title lang-content active">🏛 Виртуалды 3D тур / Виртуальный 3D тур</h2>
+            <h2 id="tour-title-ru" class="tour-title lang-content">🏛 Виртуальный 3D тур / Виртуалды 3D тур</h2>
+            
+            <div id="panorama"></div>
+        </div>
+
 
         <a href="result_final.html" class="btn lang-content" id="btn-ru">Продолжить</a>
 
     </div>
 
     <script>
+        // Инициализация 3D тура
+        pannellum.viewer('panorama', {
+            "type": "equirectangular",
+            
+            /* ПРОВЕРЬТЕ:
+               1. Папка assets должна лежать РЯДОМ с этим html файлом.
+               2. Внутри папки assets должен быть файл cabinet.jpeg
+               3. Если не работает двойным кликом — запустите через Live Server!
+            */
+            "panorama": "../assets/cabinet.jpeg", 
+            
+            "autoLoad": true,
+            "autoRotate": -2,
+            "compass": false
+        });
+
+        // Функция переключения языка
         function setLang(lang) {
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(btn => {
@@ -253,5 +274,4 @@
     </script>
 
 </body>
-
 </html>
